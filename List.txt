@@ -70,3 +70,12 @@ unzip bin888.zip
 python3.13 -m venv env_django
 source env_django/bin/activate
 
+ຄຳສັ່ງກອບຈາງຕະລາງSQLໄວ
+python manage.py dumpdata app888.Bin888 --natural-foreign --natural-primary --indent 4 > bin888_data.json
+
+ນຳເຂົ້າຂໍມຸນເກົ່າ python manage.py loaddata bin888_data.json
+ລົບຕາຕະລາງ 
+python manage.py shell
+>>> from app888.models import Bin888
+>>> Bin888.objects.all().delete()
+>>> exit()
