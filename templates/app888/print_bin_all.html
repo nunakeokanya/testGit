@@ -1,0 +1,141 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    @media print {
+    body {
+        visibility: hidden; /* ซ่อนทุกอย่างบนหน้าเว็บโดย default เมื่อพิมพ์ */
+    }
+    #printableArea {
+        visibility: visible; /* ทำให้เฉพาะส่วน #printableArea แสดงผล */
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%; /* อาจต้องปรับแต่งตามขนาดกระดาษ */
+        height: auto;
+    }
+    /* ซ่อนปุ่มพิมพ์และส่วนอื่นๆ ที่ไม่ต้องการให้ปรากฏในการพิมพ์ */
+    .btn-group, .navbar, .footer { /* ตัวอย่าง: เพิ่ม class/ID ของ element ที่ไม่ต้องการพิมพ์ */
+        display: none !important;
+    }
+    /* อาจต้องปรับแต่ง CSS อื่นๆ สำหรับการพิมพ์ให้เหมาะสม */
+    /* เช่น การตั้งค่า margin, font-size เฉพาะสำหรับการพิมพ์ */
+}
+
+</style>
+
+
+<div class="row">
+   <div  class="container-sm">
+        <div class="col-sm-12 text-center" id="printableArea">
+
+            <h5 class="text-center lh-1">
+                <img class="img-fluid" src="{% static "logo/logo888.png" %}" alt="" style="height: 6mm;">
+                    <u>ຮ້ານ ສາຍເຕີມ</u>
+                <img class="img-fluid" src="{% static "logo/logo888.png" %}" alt="" style="height: 6mm;">
+            </h5>
+        
+            <table class="table table-sm table-bordered border-0 lh-1 me-5">
+                <tbody>
+                    {% if bin_all %}
+                    {% for bin in bin_all %}
+                    <tr class="text-end mx-3">
+                        <td colspan="2" class="">
+                            ບີນ:<small>{{sale_record.id}}</small> |
+                            <small>{% now "d/m/Y H:i" %}</small> |
+                            <small><u>ເລດ: </u>{{ bin.lad }}</small>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td colspan="2" class="text-center">
+                            ຊື່: <b class="fs-3 fw-bold">{{ bin.name }} </b> 
+                            ລະຫັດ: <b class="fs-3 fw-bold">{{ bin.pw }}</b>
+                        </td>
+                        
+                    </tr> 
+            
+                    <tr>
+                        <td  class="text-center" >ເງີນ:</td>
+                        <td class="fs-4 fw-bold">
+                        {{ bin.price_thb|floatformat:0 }} ฿
+                            <b class="fs-5 fw-bold">ມີແຖມຟຮີ {{ bin.price_bonus|floatformat:0 }} ฿</b>
+                        </td>
+                    </tr> 
+            
+                    <tr>
+                        <td class="text-center">ລາຄາເງີນກີບ:</td>
+                        <td class="fs-5 fw-bold">{{ bin.price_lak|floatformat:"-3g" }} ກີບ</td>
+                    </tr> 
+                    <tr>
+                        <td class="text-center">ເວັບໄຊທາງການ:</td>
+                        <td class="fw-bold">{{ bin.url }}</td>
+                    </tr> 
+                    <tr>
+                        <td colspan="2" class="text-center mb-4">- - - - - - - * * * * * - - - - - - - 
+                            
+                        </td>
+                        
+                    </tr>
+                        
+                    {% endfor %}
+                    {% endif %}
+                    
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <small>ລວມເງິນ: </small> <strong>{{ total_price|floatformat:"-3g"}} ₭</strong> |
+                            <small>ຮັບເງີນ: </small> <strong>{{ money_change|floatformat:"-3g"}} ₭</strong> |
+                            <small>ເງິນທອນ: </small><strong>{{ sum_money_change|floatformat:"-3g"}} ₭</strong>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <span class="text-break" >ບໍລິການສະດວກວ່ອງໄວ
+                            </span>
+                            <div><i class="fa-brands fa-whatsapp"></i></div> 
+                        </td>
+                    </tr> 
+               
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            
+                            <b class="text-center">
+                                <img style="width: 80mm ;height: 15mm;" src="{% url 'app888:generate_code128_barcode' %}" alt="Code 128">
+                            </b>
+                            
+                        </td>
+                    </tr> 
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</div>
+
+<div class=" col-sm-12 text-center btn-group">
+    <input id="fmp-button" type="button" onclick="printDiv('printableArea')" value="ພິມ" class="btn btn-primary " />
+</div>
+
+<script>
+    function printDiv(divName) {
+        // ลบ 3 บรรทัดนี้ออก:
+        // var printContents = document.getElementById(divName).innerHTML;
+        // var originalContents = document.body.innerHTML;
+        // document.body.innerHTML = printContents;
+
+        window.print();
+
+        // ลบ 1 บรรทัดนี้ออก:
+        // document.body.innerHTML = originalContents;
+    }
+
+    window.setTimeout(clickit, 500); // คงโค้ดนี้ไว้
+
+    function clickit(){
+        document.getElementById("fmp-button").click();
+    }
+</script>
+
+{% endblock content %} 

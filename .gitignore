@@ -1,0 +1,11 @@
+# .gitignore for Django projects
+*.pyc
+__pycache__/
+.DS_Store
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/  # หากคุณต้องการให้ Git ละเว้นโฟลเดอร์ staticfiles ที่ถูก collect แล้ว
+venv/         # หากคุณใช้ชื่อ 'venv' สำหรับ virtual environment
+env_django/   # หากชื่อ virtual environment ของคุณคือ 'env_django' (จาก screenshot)
+.env          # หากคุณใช้ไฟล์ .env สำหรับ environment variables

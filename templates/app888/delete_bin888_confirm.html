@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="col-xl-8 mx-auto mt-4">
+    <h3 class="mb-4 text-danger">ຢືນຢັນການລຶບຂໍ້ມູນແບັດເຕີລີ</h3>
+    <p class="alert alert-warning">
+        ທ່ານແນ່ໃຈບໍທີ່ຈະລຶບລາຍການແບັດເຕີລີຕໍ່ໄປນີ້ຢ່າງຖາວອນ?
+    </p>
+    <p><strong>ລຳດັບ:</strong> {{ item.id }}</p>
+    <p><strong>ຊື່:</strong> {{ item.name }}</p>
+    <p><strong>ລະຫັດ:</strong> {{ item.pw }}</p>
+    <p><strong>ສະຖານະ:</strong> 
+        {% if item.published %}ຍັງບໍ່ຂາຍ{% else %}ຂາຍແລ້ວ{% endif %}
+    </p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger mt-3"><i class="fas fa-trash-alt"></i> ຢືນຢັນການລຶບ</button>
+        <a href="{% url 'app888:bin888_list' %}" class="btn btn-secondary mt-3">ຍົກເລີກ</a>
+    </form>
+</div>
+{% endblock %}

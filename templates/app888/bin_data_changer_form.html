@@ -1,0 +1,123 @@
+{% extends 'layouts/base.html' %} {# ສັງເກດ: ປ່ຽນເປັນ 'app888/base.html' ຖ້າ base.html ຢູ່ໃນໂຟນເດີ templates ຂອງ app888 #}
+
+{% block title %}ເຄື່ອງມືປ່ຽນຂໍ້ມູນ BIN ແບບອັດຕະໂນມັດ{% endblock %} {# ປ່ຽນເປັນພາສາລາວ #}
+
+{% block content %}
+    <div class="container my-4">
+        <h1 class="mb-4">ເຄື່ອງມືປ່ຽນຂໍ້ມູນ BIN ແບບອັດຕະໂນມັດ</h1> {# ປ່ຽນເປັນພາສາລາວ #}
+
+        <div class="card shadow-sm"> {# ເພີ່ມ card ສຳລັບຟອມ #}
+            <div class="card-header bg-primary text-white">
+                <h4>ຕັ້ງຄ່າການດໍາເນີນງານ</h4> {# ປ່ຽນເປັນພາສາລາວ #}
+            </div>
+            <div class="card-body">
+                <form id="automation-form">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="external_username" class="form-label">ຊື່ຜູ້ໃຊ້ພາຍນອກ:</label> {# ປ່ຽນເປັນພາສາລາວ #}
+                        <input type="text" id="external_username" name="external_username"
+                               value="{{ default_username }}" placeholder="ປ້ອນຊື່ຜູ້ໃຊ້ພາຍນອກ" required
+                               class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="external_password" class="form-label">ລະຫັດຜ່ານພາຍນອກ:</label> {# ປ່ຽນເປັນພາສາລາວ #}
+                        <input type="password" id="external_password" name="external_password"
+                               value="{{ default_password }}" placeholder="ປ້ອນລະຫັດຜ່ານພາຍນອກ" required
+                               class="form-control">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="start_page_number" class="form-label">ໝາຍເລກໜ້າເລີ່ມຕົ້ນ:</label> {# ປ່ຽນເປັນພາສາລາວ #}
+                        <input type="number" id="start_page_number" name="start_page_number"
+                               value="{{ default_start_page_number }}" min="1"
+                               class="form-control">
+                        <small class="form-text text-muted">
+                            (ໃນທາງປະຕິບັດ ລະບົບຈະເລີ່ມຕົ້ນປະມວນຜົນຈາກໜ້າທີ່ສະແດງເທິງເວັບຫຼັງຈາກການເຂົ້າສູ່ລະບົບ)
+                        </small> {# ປ່ຽນเป็นภาษาลาว #}
+                    </div>
+                    <div class="mb-4">
+                        <label for="additional_pages_to_process" class="form-label">ຈໍານວນໜ້າ **ເພີ່ມເຕີມ** ທີ່ຕ້ອງປະມວນຜົນ:</label> {# ປ່ຽນเป็นภาษาลาว #}
+                        <input type="number" id="additional_pages_to_process" name="additional_pages_to_process"
+                               value="{{ default_additional_pages_to_process }}" min="0"
+                               class="form-control">
+                        <small class="form-text text-muted">
+                            ໃສ່ 0 ເພື່ອປະມວນຜົນສະເພາະໜ້າປັດຈຸບັນ. 
+                            ໃສ່ 1 ເພື່ອປະມວນຜົນໜ້າປັດຈຸບັນ + 1 ໜ້າຖັດໄປ (ລວມ 2 ໜ້າ).
+                            ໃສ່ 2 ເພື່ອປະມວນຜົນໜ້າປັດຈຸບັນ + 2 ໜ້າຖັດໄປ (ລວມ 3 ໜ້າ).
+                            ແລະອື່ນໆ.
+                        </small> {# ປ່ຽນเป็นภาษาลาว #}
+                    </div>
+
+                    <button type="submit" id="submit-button" class="btn btn-success btn-lg w-100">
+                        <i class="fas fa-play-circle me-2"></i> ເລີ່ມຕົ້ນ Automation
+                    </button> {# ປ່ຽນเป็นภาษาลาว #}
+
+                    {# Loading Spinner (ใช้คลาส Bootstrap) #}
+                    <div id="loading-spinner" class="text-center mt-3" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">ກຳລັງດໍາເນີນການ...</span> {# ປ່ຽນเป็นภาษาลาว #}
+                        </div>
+                        <p class="mt-2 text-muted">ກຳລັງດໍາເນີນການ... ກະລຸນາລໍຖ້າ</p> {# ປ່ຽນเป็นภาษาลาว #}
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {# Status Message (ใช้คลาส Bootstrap alert) #}
+        <div id="status-message" class="alert mt-4" style="display: none;" role="alert"></div>
+    </div>
+
+    <script>
+        document.getElementById('automation-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const statusMessageDiv = document.getElementById('status-message');
+            const submitButton = document.getElementById('submit-button');
+            const loadingSpinner = document.getElementById('loading-spinner');
+
+            // 1. แสดง Spinner และซ่อนปุ่ม
+            submitButton.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+            
+            // แสดงข้อความเริ่มต้นใน alert
+            statusMessageDiv.style.display = 'block'; // ทำให้แสดงผล
+            statusMessageDiv.className = 'alert mt-4 alert-info'; // ใช้ alert-info
+            statusMessageDiv.textContent = 'ກຳລັງເລີ່ມຕົ້ນ Automation... ກະລຸນາລໍຖ້າ'; // ປ່ຽນเป็นภาษาลาว
+
+            fetch('{% url "app888:start_bin_data_change" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 2. ซ่อน Spinner และแสดงปุ่มกลับมา
+                loadingSpinner.style.display = 'none';
+                submitButton.style.display = 'block';
+
+                if (data.status === 'success') {
+                    statusMessageDiv.className = 'alert mt-4 alert-success'; // ใช้ alert-success
+                } else {
+                    statusMessageDiv.className = 'alert mt-4 alert-danger'; // ใช้ alert-danger
+                }
+                statusMessageDiv.textContent = data.message;
+            })
+            .catch(error => {
+                // 2. ซ่อน Spinner และแสดงปุ่มกลับมา (ในกรณีเกิดข้อผิดพลาดของ fetch)
+                loadingSpinner.style.display = 'none';
+                submitButton.style.display = 'block';
+
+                console.error('Error:', error);
+                statusMessageDiv.className = 'alert mt-4 alert-danger'; // ใช้ alert-danger
+                statusMessageDiv.textContent = 'ເກີດຂໍ້ຜິດພາດໃນການສື່ສານກັບເຊີເວີ.'; // ປ່ຽນเป็นภาษาลาວ
+            });
+        });
+
+                
+
+    </script>
+{% endblock %}

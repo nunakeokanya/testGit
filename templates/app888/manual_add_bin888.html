@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html' %} {# **ແກ້ໄຂບ່ອນນີ້ໃຫ້ກົງກັບ path ຂອງ base.html ຂອງທ່ານ** #}
+
+{% block title %}Add{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="mb-4">{{ title }}</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" action="{% url 'app888:manual_add_bin888' %}">
+            {% csrf_token %} {# ສໍາຄັນຫຼາຍສໍາລັບຄວາມປອດໄພຂອງ Django #}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary mt-3">ບັນທຶກຂໍ້ມູນບິນ</button>
+            <a href="{% url 'app888:bin888' %}" class="btn btn-secondary mt-3">ຍົກເລີກ</a>
+        </form>
+    </div>
+
+    {% endblock %}

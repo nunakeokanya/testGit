@@ -1,0 +1,72 @@
+mkdir mysite ສ້າງກ່ອງ
+ແຊັກແພັກເກດ $ pip list ຫຼື  $ pip freeze
+
+$ python -m pip install --upgrade pip
+
+ຕິດຕັ້ງ $ pip install virtualenv
+( $ virtualenv env_django ຫຼື
+ $ virtualenv -p python env ຫຼື
+ບໍໄດ້)
+$ python -m venv env ຕອນສ້າງ env
+$ py -m venv env
+
+
+ເຂົ້າກ່ອງ ເປີດໃຊ້ງານ Venv  $ .\env_django\Scripts\activate   .\env_django\Scripts\activate   .\env_django\Scripts\activate   
+ເຂົ້າກ່ອງ ປີດໃຊ້ງານ Venv  $ deactivate
+(venv) E:\Python_Project\DJ\venv>
+
+
+ໃຊ້ງານຢູ່ $    Scripts\activate  ແອັກຕີເວດ ເປິດສະຄິບໂຕຊ່ວຍຕົວໃຊ້ງານ
+
+$dir ກວດສອບຂໍ້ມູນໃນກ່ອງຕາມຟາດ
+
+$  notepad requirements.txt
+$ pip freeze > requirements.txt ໂນດລາຍບາລີໄວ້
+$ pip install -r requirements.txt
+$ pip uninstall -r requirements.txt
+ ລົງລາຍບາໄລລີຕາມ notepad
+
+ຕີດຕັ້ງ ດີຈັງໂກໃນສະພາບຈຳລອງ Venv
+$ pip install Django==4.0.1
+$ django-admin version ກວດເວີຊັ່ນ
+ກວດເວິຊັ້ນ $ python -m django --version
+
+ສ້າງໂປເຈັກ $ django-admin startproject cpuzshpiping. ຖ້າມີ . ຈະສ້າງຂື້ນຍັບອອກມາຕົງພາດທີ່ຢູ່ປະຈຸບັນ
+$ django-admin startproject mysite . postkhy
+
+$ python manage.py runserver
+
+ສ້າງapp  $ python manage.py startapp myapp i
+$ python manage.py runserverpython manage.py shell
+
+>>> from blog.models import Post 
+>>> data = Post(title='Aara', body = 'Thaidj fgr aaa post')
+>>> data.save()
+
+
+>>> obj = Post.objects.all()    
+>>> obj
+<QuerySet [<Post: Aara>, <Post: BBBbb>]>
+
+>>> single = Post.objects.get(id=1)
+>>> single
+<Post: Aara>
+>>> single.title
+'Aara'
+>>> single.body 
+'Thaidj fgr aaa post'
+
+$ exit()
+
+$ python manage.py createsuperuser bounmy /bounmy54344245a@gmail.com / 54344245@888
+
+$ python manage.py makemigrations polls
+$ python manage.py migrate
+
+SengEmail bounmytrk54@gmail.com  /  54344245bM  2058987388   boun5445re@hotmail.com 
+
+
+unzip bin888.zip
+python3.13 -m venv env_django
+source env_django/bin/activate
+

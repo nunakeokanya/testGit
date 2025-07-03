@@ -1,0 +1,56 @@
+{% extends 'layouts/base.html' %} {# ສົມມຸດວ່າທ່ານມີ base.html ຂອງທ່ານຢູ່ແລ້ວ #}
+{% load static %}
+{% load app_filters %} {# -- ອັນນີ້ຄວນຈະຢູ່ບ່ອນນີ້ #}
+
+{% block title %}ກວດສອບຂໍ້ມູນ Bin888{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>ກວດສອບຂໍ້ມູນ Bin888 ທີ່ດຶງມາ</h2>
+
+    <p>{{ message }}</p>
+
+    {% if scraped_items %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>ລະຫັດຜ່ານສະມາຊິກ</th>
+                <th>ຊື່ບັນຊີ</th>
+                <th>ເຄຣດິດ (THB)</th>
+                <th>ເຄຣດິດ (LAK)</th>
+                <th>ໂບນັດ (THB)</th>
+                <th>ເວລາທີ່ດຶງມາ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in scraped_items %}
+            <tr>
+                <td>{{ item.member_pw }}</td>
+                <td>{{ item.account_name }}</td>
+                <td>{{ item.price_thb|floatformat:2 }}</td> {# ສະແດງທົດສະນິຍົມ 2 ຕໍາແໜ່ງ #}
+                <td>{{ item.price_lak|floatformat:2 }}</td>
+                <td>{{ item.price_bonus|floatformat:2 }}</td>
+                <td>{{ item.date_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>ຈຳນວນລາຍການທີ່ດຶງມາ: <strong>{{ scraped_items|length }}</strong> ລາຍການ</p>
+
+    {# ເພີ່ມຟອມ ແລະ ປຸ່ມສຳລັບຢືນຢັນການບັນທຶກ #}
+    <form method="post" action="{% url 'app888:confirm_save_bin_data' %}" class="mt-4">
+        {% csrf_token %}
+        {# ສົ່ງຂໍ້ມູນທີ່ປະມວນຜົນແລ້ວກັບຄືນໄປຍັງ View ທີ່ຈະບັນທຶກຈິງ #}
+        {# ວິທີທີ່ງ່າຍທີ່ສຸດຄືການປ່ຽນເປັນ JSON string ແລ້ວສົ່ງໄປໃນ hidden input #}
+        {# ຕ້ອງລະວັງຂະໜາດຂອງຂໍ້ມູນ ຖ້າຂໍ້ມູນຫຼາຍເກີນໄປ ອາດຈະບໍ່ເໝາະສົມ #}
+        <input type="hidden" name="data_to_save" value="{{ scraped_items|to_json }}">
+        <button type="submit" class="btn btn-primary btn-lg">ບັນທຶກຂໍ້ມູນ</button>
+        <a href="{% url 'app888:index888' %}" class="btn btn-secondary btn-lg ml-2">ຍົກເລີກ</a>
+    </form>
+
+    {% else %}
+    <p>ບໍ່ພົບຂໍ້ມູນທີ່ດຶງມາ</p>
+    {% endif %}
+</div>
+{% endblock %}

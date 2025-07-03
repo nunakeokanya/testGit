@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>แสดงบาร์โค้ด (แบบง่าย)</title>
+</head>
+<body>
+    <h1>บาร์โค้ด EAN-13</h1>
+    <img src="{% url 'app888:generate_ean13_barcode' %}" alt="บาร์โค้ด EAN-13">
+
+    <h1>บาร์โค้ด Code 128</h1>
+    <img src="{% url 'app888:generate_code128_barcode' %}" alt="บาร์โค้ด Code 128">
+</body>
+</html>

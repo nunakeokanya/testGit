@@ -1,0 +1,81 @@
+{% extends 'layouts/base.html' %} {# ສົມມຸດວ່າເຈົ້າມີ Template ພື້ນຖານທີ່ມີ Bootstrap #}
+
+{% block content %}
+    <h1 class="mt-4 mb-3">ລາຍການອໍເດີ້</h1>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID ອໍເດີ</th>
+                <th>ວັນທີ</th>
+                <th>ລານການ</th>
+                <th class="text-right">ລາຄາ (THB)</th>
+                <th class="text-right">bonus (THB)</th>
+                <th class="text-right">ລາຄາ (LAK)</th>
+                <th>ລາຍລະອຽດ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.sale_datetime|date:"d/m/Y H:i:s" }}</td>
+
+                    <td>
+                        <ul>
+                            {% for item in order.salerecorditem_set.all %}
+                                <li>{{ item.bin888.name }} (ຈ/ນ: {{ item.quantity }}) (THB: {{ item.sale_price_thb }}) (bonus: {{ item.sale_bonus }}) (LAK: {{ item.sale_price_lak }})</li>
+                            {% empty %}
+                                <li>ບໍ່ມີ ລາຍການ</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+
+                    <td class="text-right">{{ order.total_sale_price_thb }}</td>
+                    <td class="text-right">{{ order.total_sale_bonus }}</td>
+                    <td class="text-right">{{ order.total_sale_price_lak }}</td>
+                    <td><a href="{% url 'app888:sale_detail' order.id %}" class="btn btn-info btn-sm">ລາຍລະອຽດ</a></td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="7" class="text-center">ບໍ່ມີ ລາຍການອໍເດີ້</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if orders.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ orders.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in paginator.page_range %}
+                {% if orders.number == num %}
+                    <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                {% elif num > orders.number|add:'-2' and num < orders.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if orders.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ orders.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

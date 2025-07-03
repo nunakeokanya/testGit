@@ -1,0 +1,42 @@
+{% extends 'layouts/base.html' %} {# ສົມມຸດວ່າທ່ານມີ Template ພື້ນຖານທີ່ມີ Bootstrap #}
+
+{% block content %}
+
+
+    <h1 class="mt-4 mb-3">ລາຍລະອຽດການຂາຍ (ບິນ ID: {{ sale_record.id }})</h1>
+    <p class="mb-2"><strong>ວັນທີຂາຍ:</strong> {{ sale_record.sale_datetime|date:"d/m/Y H:i:s" }}</p>
+    <h2 class="mt-3 mb-2">ລາຍການສິນຄ້າ:</h2>
+    <ul class="list-group mb-3">
+        {% for item in sale_items %}
+            <li class="list-group-item d-flex justify-content-start align-items-center">
+                <span>{{ item.bin888.name }} ລະຫັດ: {{ item.bin888.pw }} - ຈຳນວນ: {{ item.quantity }}</span>
+                <div>
+                    {% if item.sale_price_thb > 0 %}
+                        <span class="badge rounded-pill bg-primary ms-1">฿ {{ item.sale_price_thb }}</span>
+                    {% endif %}
+                        <span class="badge rounded-pill bg-warning text-dark mr-1">ໂບນັດ: ฿ {{ item.sale_bonus }}</span>
+                    {% if item.sale_price_lak > 0 %}
+                        <span class="badge rounded-pill bg-success">₭ {{ item.sale_price_lak }}</span>
+                    {% endif %}
+                    
+                </div>
+            </li>
+        {% empty %}
+            <li class="list-group-item">ບໍ່ມີສິນຄ້າໃນບິນນີ້</li>
+        {% endfor %}
+    </ul>
+    <div class="text-right">
+        {% if sale_record.total_sale_price_thb > 0 %}
+            <p><strong>ລາຄາລວມທັງໝົດ (THB):</strong> <span class="text-dark">{{ sale_record.total_sale_price_thb }}</span></p>
+
+        {% endif %}
+        {% if sale_record.total_sale_bonus > 0 %}
+            <p><strong>ໂບນັດລວມທັງໝົດ (THB):</strong> <span class="text-warning">฿ {{ sale_record.total_sale_bonus }}</span></p>
+        {% endif %}
+        {% if sale_record.total_sale_price_lak > 0 %}
+            <p><strong>ລາຄາລວມທັງໝົດ (LAK):</strong> <span class="text-success">₭ {{ sale_record.total_sale_price_lak }}</span></p>
+        {% endif %}
+    </div>
+    <a href="{% url 'app888:order_list' %}" class="btn btn-secondary">ກັບໄປລາຍການອໍເດີ້</a>
+    
+{% endblock %}

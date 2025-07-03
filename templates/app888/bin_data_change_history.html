@@ -1,0 +1,313 @@
+{% extends 'layouts/base.html' %} {# ตรวจสอบว่าพาธ 'layouts/base.html' ถูกต้อง #}
+
+{% block title %}ประวัติการเปลี่ยนข้อมูล BIN{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="my-4 text-center">ประวัติการเปลี่ยนข้อมูล BIN</h1> 
+
+    <a href="/bin-data-changer/" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-alt-circle-left"></i> กลับไปหน้าเปลี่ยนข้อมูล
+    </a>
+    
+    {# ส่วนสำหรับแสดงสถานะ Automation แบบ Real-time #}
+    {# live-status-summary: แถบสรุปสถานะล่าสุด #}
+    <div id="live-status-summary" class="alert mt-3" style="display: none;" role="alert">
+        กำลังตรวจสอบสถานะงาน Automation...
+    </div>
+
+    {# progress-log: ส่วนสำหรับแสดงรายการความคืบหน้าแต่ละขั้นตอน #}
+    <div id="progress-log" class="mt-3 card card-body bg-light" style="max-height: 300px; overflow-y: auto; display: none;">
+        <h6 class="card-title">บันทึกความคืบหน้า:</h6>
+        {# รายการสถานะจะถูกเพิ่มเข้ามาที่นี่โดย JavaScript #}
+    </div>
+
+    {# เพิ่มส่วนนี้เพื่อแสดงจำนวนรายการทั้งหมด (จาก Paginator) #}
+    {% if history_entries %}
+        <p class="text-end text-muted"><strong>รวมทั้งหมด:</strong> {{ history_entries.paginator.count }} รายการ</p>
+    {% endif %}
+
+    <div class="table-responsive"> 
+        <table class="table table-striped table-bordered table-hover"> 
+            <thead class="table-light"> 
+                <tr>
+                    <th>วันที่ และ เวลา</th> 
+                    <th>สถานะ</th> 
+                    <th>ผู้ดำเนินการ</th> 
+                    <th>ชื่อผู้ใช้เก่า</th> 
+                    <th>รหัสผ่านเก่า</th> 
+                    <th>ชื่อลูกค้าเก่า</th>
+                    <th>ยอดเงินเก่า</th>
+                    <th>ชื่อผู้ใช้ใหม่</th> 
+                    <th>รหัสผ่านใหม่</th> 
+                    <th>ชื่อลูกค้าใหม่</th> 
+                    <th>ยอดเงินใหม่</th>
+                    <th>ข้อความ</th> 
+                </tr>
+            </thead>
+            <tbody>
+                {# วนลูปแสดงประวัติจาก history_entries ที่ส่งมาจาก Django View #}
+                {# history_entries ตอนนี้เป็น Page object ที่ iterable ได้เลย #}
+                {% for entry in history_entries %}
+                <tr>
+                    <td>{{ entry.change_datetime|date:"Y-m-d H:i:s" }}</td>
+                    <td class="
+                        {% if entry.status == 'success' %}text-success
+                        {% elif entry.status == 'failed' %}text-danger
+                        {% elif entry.status == 'pending' %}text-warning
+                        {% else %}text-muted{% endif %}
+                        font-weight-bold">
+                        {{ entry.status }}
+                    </td>
+                    <td>{{ entry.processed_by.username|default:"N/A" }}</td> 
+                    
+                    <td>{{ entry.old_username|default:"-" }}</td>
+                    <td>
+                        {% if entry.old_password %}
+                            {{entry.old_password}}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ entry.old_customer_name|default:"-" }}</td> 
+                    <td>{{ entry.old_balance }}</td>
+
+                    <td>{{ entry.new_username|default:"-" }}</td>
+                    <td>
+                        {% if entry.new_password %}
+                        {{entry.new_password}}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ entry.new_customer_name|default:"-" }}</td> 
+                    <td>{{ entry.new_balance|default:"-" }}</td>
+
+                    <td>{{ entry.message|default:"-" }}</td>
+                </tr>
+                {% empty %} {# บล็อกนี้จะทำงานหาก history_entries ไม่มีข้อมูล #}
+                <tr>
+                    <td colspan="12" class="text-center text-muted">
+                        ไม่มีประวัติการเปลี่ยนข้อมูล BIN.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody> 
+        </table> 
+    </div> 
+
+
+
+
+    {# --- Pagination Controls (ปรับใช้โค้ดชุดที่ 2) --- #}
+    {# แสดง Pagination ก็ต่อเมื่อมีหลายหน้า #}
+    {% if history_entries.has_other_pages %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4">
+            {# ลิงก์ "First" และ "Previous" #}
+            {% if history_entries.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span> {# ลิงก์ไปหน้าแรกสุด #}
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ history_entries.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span> {# ลิงก์ไปหน้าก่อนหน้า #}
+                    </a>
+                </li>
+            {% endif %}
+
+            {# แสดง Page Numbers แบบจำกัด #}
+            {% for i in paginator.page_range %} {# ใช้ paginator.page_range ที่ส่งมาจาก context #}
+                {% if history_entries.number == i %} {# ถ้าเป็นหน้าปัจจุบัน #}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">{{ i }}</span>
+                    </li>
+                {% elif i > history_entries.number|add:'-3' and i < history_entries.number|add:'3' %} {# แสดง 2 หน้าก่อน/หลังหน้าปัจจุบัน #}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {# ลิงก์ "Next" และ "Last" #}
+            {% if history_entries.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ history_entries.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span> {# ลิงก์ไปหน้าถัดไป #}
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span> {# ลิงก์ไปหน้าสุดท้ายสุด #}
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {# --- End Pagination Controls --- #}
+
+    
+    {# --- End Pagination Controls --- #}
+    {% if orders.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ orders.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in paginator.page_range %}
+                {% if orders.number == num %}
+                    <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                {% elif num > orders.number|add:'-2' and num < orders.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if orders.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ orders.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+</div>
+
+{# ส่วนของ JavaScript สำหรับ Real-time Automation Status ยังคงอยู่ที่เดิม #}
+<script>
+    let pollingInterval;
+    let currentJobStatus = null; 
+    let lastDisplayedProgressDetail = null; // เก็บรายละเอียด status_detail สุดท้ายที่แสดงใน log เพื่อป้องกันการซ้ำ
+    let currentProcessedByUser = null; // เก็บชื่อผู้ใช้ล่าสุด
+    let logInitialized = false; // Flag เพื่อเช็คว่า Log เริ่มต้นแล้วหรือยัง
+
+    function checkBinChangeAutomationStatus() {
+        const liveStatusSummaryDiv = document.getElementById('live-status-summary');
+        const progressLogDiv = document.getElementById('progress-log');
+        
+        liveStatusSummaryDiv.style.display = 'block'; // แสดงแถบสรุปสถานะเสมอ
+
+        fetch('{% url "app888:check_bin_change_automation_status" %}', { 
+            method: 'GET', 
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => {
+            if (!response.ok) { // ตรวจสอบสถานะ HTTP response
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const userName = data.processed_by_username ? ` โดย ${data.processed_by_username}` : '';
+            const statusTime = data.timestamp;
+
+            // --- อัปเดตแถบสถานะสรุป (live-status-summary) ---
+            let summaryMessage = `สถานะปัจจุบัน: ${data.message}${userName} (${statusTime})`;
+            if (data.progress_details && data.progress_details.status_detail) {
+                summaryMessage = `สถานะล่าสุด: ${data.progress_details.status_detail}${userName} (${statusTime})`;
+            }
+            liveStatusSummaryDiv.textContent = summaryMessage;
+
+            // ตั้งค่าสีของแถบสถานะสรุป
+            if (data.status === 'success') {
+                liveStatusSummaryDiv.className = 'alert mt-3 alert-success';
+                clearInterval(pollingInterval); // หยุด Polling เมื่อสำเร็จ
+            } else if (data.status === 'failed') {
+                liveStatusSummaryDiv.className = 'alert mt-3 alert-danger';
+                clearInterval(pollingInterval); // หยุด Polling เมื่อล้มเหลว
+            } else if (data.status === 'no_job') {
+                liveStatusSummaryDiv.className = 'alert mt-3 alert-info';
+                liveStatusSummaryDiv.textContent = 'ไม่มีงาน Automation ที่กำลังดำเนินการอยู่.';
+                clearInterval(pollingInterval); // หยุด Polling เมื่อไม่มีงาน
+            } else {
+                liveStatusSummaryDiv.className = 'alert mt-3 alert-warning'; // สำหรับ pending/processing
+                // หากมีงานกำลังรัน ให้แสดง progress log
+                progressLogDiv.style.display = 'block'; 
+            }
+
+            // --- เพิ่มรายละเอียดความคืบหน้าใน Progress Log (progress-log) ---
+            if (data.progress_details && data.progress_details.status_detail) {
+                const currentStatusDetail = data.progress_details.status_detail;
+                const currentRow = data.progress_details.current_row;
+                const totalRows = data.progress_details.total_rows;
+                
+                let logMessage = `[${statusTime}] ${currentStatusDetail}`;
+                if (currentRow && totalRows) {
+                    logMessage += ` (แถวที่ ${currentRow} จาก ${totalRows})`;
+                }
+                logMessage += userName;
+
+                // ตรวจสอบเพื่อไม่ให้เพิ่มข้อความซ้ำ หากรายละเอียดสถานะไม่เปลี่ยน
+                // และถ้าไม่ใช่สถานะ final (success, failed, no_job)
+                if (currentStatusDetail !== lastDisplayedProgressDetail && data.status !== 'success' && data.status !== 'failed' && data.status !== 'no_job') {
+                    const logEntry = document.createElement('p'); // สร้าง tag <p>
+                    logEntry.classList.add('small', 'mb-1', 'text-muted'); // เพิ่ม class เพื่อจัดรูปแบบเล็กน้อย
+                    logEntry.textContent = logMessage;
+                    progressLogDiv.appendChild(logEntry); // เพิ่มเข้าไปใน progress-log div
+                    lastDisplayedProgressDetail = currentStatusDetail; // อัปเดตสถานะที่แสดงล่าสุด
+                    
+                    // เลื่อน scrollbar ลงมาด้านล่างสุดโดยอัตโนมัติ
+                    progressLogDiv.scrollTop = progressLogDiv.scrollHeight;
+                }
+            } 
+            
+            // เมื่อสถานะเป็น Success หรือ Failed ให้เพิ่มข้อความสรุปสุดท้ายลงใน log
+            // ตรวจสอบว่ายังไม่ได้เพิ่มข้อความนี้ไปแล้ว
+            if ((data.status === 'success' || data.status === 'failed') && lastDisplayedProgressDetail !== data.status + '_final') {
+                const logEntry = document.createElement('p');
+                logEntry.classList.add('small', 'mb-1', (data.status === 'success' ? 'text-success' : 'text-danger'));
+                logEntry.textContent = `[${statusTime}] งาน ${data.status === 'success' ? 'สำเร็จ' : 'ล้มเหลว'}: ${data.message}${userName}`;
+                progressLogDiv.appendChild(logEntry);
+                progressLogDiv.scrollTop = progressLogDiv.scrollHeight; // เลื่อนลงมา
+                lastDisplayedProgressDetail = data.status + '_final'; // ตั้งค่าเป็น 'success_final' หรือ 'failed_final' เพื่อป้องกันการเพิ่มซ้ำ
+            } else if (data.status === 'no_job' && !logInitialized) {
+                // เพิ่มข้อความ no_job แค่ครั้งเดียวตอนเริ่มต้น ถ้าไม่มีงาน
+                const logEntry = document.createElement('p');
+                logEntry.classList.add('small', 'mb-1', 'text-info');
+                logEntry.textContent = `[${statusTime}] ไม่มีงาน Automation ที่กำลังดำเนินการอยู่.`;
+                progressLogDiv.appendChild(logEntry);
+                logInitialized = true; // ตั้งค่าว่า log ได้ถูกเริ่มต้นแล้ว
+            }
+
+
+            // อัปเดตตัวแปรสถานะรวม (currentJobStatus) และผู้ใช้
+            currentJobStatus = data.status;
+            currentProcessedByUser = data.processed_by_username;
+
+        })
+        .catch(error => {
+            console.error('เกิดข้อผิดพลาดในการตรวจสอบสถานะ:', error);
+            clearInterval(pollingInterval); 
+            liveStatusSummaryDiv.className = 'alert mt-3 alert-danger'; 
+            liveStatusSummaryDiv.textContent = 'เกิดข้อผิดพลาดในการตรวจสอบสถานะบนเซิร์ฟเวอร์.';
+            
+            // เพิ่มข้อความ Error ลงใน Log ด้วย
+            const logEntry = document.createElement('p');
+            logEntry.classList.add('small', 'mb-1', 'text-danger');
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ข้อผิดพลาด: ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้. (โปรดตรวจสอบ Console)`;
+            progressLogDiv.appendChild(logEntry);
+            progressLogDiv.style.display = 'block'; // แสดง log div ด้วย
+            progressLogDiv.scrollTop = progressLogDiv.scrollHeight; // เลื่อนลงมา
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // เริ่มต้น Polling ทันทีที่หน้าเว็บโหลดเสร็จ
+        pollingInterval = setInterval(checkBinChangeAutomationStatus, 5000); 
+    });
+</script>
+{% endblock %}

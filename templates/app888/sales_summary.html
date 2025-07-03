@@ -1,0 +1,140 @@
+{% extends 'layouts/base.html' %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</div>
+
+
+<div class="row">
+    <h1>ສະຫຼູບຍອດຂາຍ</h1>
+
+    <div class="col-sm-6 border">
+        <h2>ສະຫຼູບຍອດຂາຍປະຈຳວັນ</h2>
+        <p>ຍອດຂາຍມຶ້ນີ້: {{ daily_sales|floatformat:2 }} บาท</p>
+        <p>ຍອດຂາຍມຶ້ນວານ: {{ yesterday_sales|floatformat:2 }} บาท</p>
+        {% if daily_difference is not None %}
+            {% if daily_sales > yesterday_sales %}
+                <p>ເພີ່ມຂື້ນ: {{ daily_difference|floatformat:2 }} บาท ({% if daily_percentage_change is not None %}{{ daily_percentage_change|floatformat:2 }}%{% endif %})</p>
+            {% elif daily_sales < yesterday_sales %}
+                <p>ລົດລົງ: {{ daily_difference_negative|floatformat:2 }} บาท ({% if daily_percentage_change is not None %}{{ daily_percentage_change|floatformat:2 }}%{% endif %})</p>
+            {% else %}
+                <p>ບໍ່ມີປຽ່ນແປງ</p>
+            {% endif %}
+        {% else %}
+            <p>{% if daily_sales != 0 %}ເພີ່ມຂື້ນ{% else %}ບໍ່ມີປຽ່ນແປງ{% endif %}</p>
+        {% endif %}
+
+        <hr>
+        <div class="my-2">
+            <h2><i class="fas fa-chart-line text-success float-right"></i> ການຂາຍລາຍວັນ</h2>
+            <canvas id="dailySalesChart"></canvas>
+        </div>
+        
+        <script>
+            const dailySalesChartCanvas = document.getElementById('dailySalesChart');
+            const dailySalesData = JSON.parse('{{ daily_sales_data|safe }}');
+        
+            const labels = Object.keys(dailySalesData).sort();
+            const data = labels.map(key => dailySalesData[key]);
+        
+            const dailyChart = new Chart(dailySalesChartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'ຍອດຂາຍ (บาท)',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+
+
+
+    <div class="col-sm-6 border">
+        <h2>ສະຫຼູບຍອດຂາຍປະຈຳອາທິດ</h2>
+        <p>ຍອດຂາຍອາທິດນີ້: {{ weekly_sales|floatformat:2 }} บาท</p>
+        <p>ຍອດຂາຍອາທິດທີ່ແລ້ວ: {{ last_week_sales|floatformat:2 }} บาท</p>
+        {% if weekly_difference is not None %}
+            {% if weekly_sales > last_week_sales %}
+                <p>ເພີ່ມຂື້ນ: {{ weekly_difference|floatformat:2 }} บาท ({% if weekly_percentage_change is not None %}{{ weekly_percentage_change|floatformat:2 }}%{% endif %})</p>
+            {% elif weekly_sales < last_week_sales %}
+                <p>ລົດລົງ: {{ weekly_difference_negative|floatformat:2 }} บาท ({% if weekly_percentage_change is not None %}{{ weekly_percentage_change|floatformat:2 }}%{% endif %})</p>
+            {% else %}
+                <p>ບໍ່ມີປຽ່ນແປງ</p>
+            {% endif %}
+        {% else %}
+            <p>{% if weekly_sales != 0 %}ເພີ່ມຂື້ນ{% else %}ບໍ່ມີປຽ່ນແປງ{% endif %}</p>
+        {% endif %}
+
+        <hr>
+        <div class="my-2">
+            <h2><i class="fas fa-chart-line text-success float-right"></i> ການຂາຍລາຍອາທິດ</h2>
+            <canvas id="weeklySalesChart"></canvas>
+        </div>
+        <script type="">
+
+            // ... (โค้ดสร้างกราฟรายวัน) ...
+        
+            const weeklySalesChartCanvas = document.getElementById('weeklySalesChart');
+            const weeklyChart = new Chart(weeklySalesChartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: ['ອາທິດກ່ອນ', 'ອາທິດນີ້'],
+                    datasets: [{
+                        label: 'ຍອດຂາຍ (บาท)',
+                        data: [ {{ last_week_sales|floatformat:2 }}, {{ weekly_sales|floatformat:2 }} ],
+                        backgroundColor: [
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgb(255, 206, 86)',
+                            'rgb(75, 192, 192)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+
+{% endblock content %} 
+
+

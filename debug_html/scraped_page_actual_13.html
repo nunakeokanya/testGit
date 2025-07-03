@@ -1,0 +1,1593 @@
+<html><head>
+        <title>Center</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="../bingo.css?rd=3" type="text/css">
+        <script type="text/javascript" src="../links.js"></script>
+        <script type="text/javascript" src="/common/js/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="/common/js/jquery-ui-1.10.3.custom.js"></script>
+        <script type="text/javascript">
+            function getwallet(id1,id2,i) {
+            	MyCounter();
+            	var request = new XMLHttpRequest();
+                request.open("GET", "/common/getwallet.jsp?club_id="+id1+"&UnitKey="+id2);
+                request.onreadystatechange = function() {
+                	if(this.readyState === 4 && this.status === 200 && LTrim(unescape(this.responseText))!=""){
+                        document.getElementById('Now_XinYong_'+id1).innerHTML= LTrim(unescape(this.responseText));
+                    }
+                };
+                request.send();
+        	}
+            function copyToClipboard(textToCopy) {
+
+                let textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                textArea.style.position = "absolute";
+                textArea.style.opacity = 0;
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                return new Promise((res, rej) => {
+                    document.execCommand('copy') ? res() : rej();
+                    textArea.remove();
+                });
+	        }
+			function copy_by_manage(acc) {
+				try {
+					var str = "บัญชี："+acc+"\n";
+	              	str +="URLเว็บไซต์ทางการ：https://royal558.com/";
+	              	copyToClipboard(str);
+	        	    alert("คัดลอกสำเร็จ!\n"+str);
+				} catch (err) {
+					console.error('Failed to Copy: ', err);
+				}
+			}
+            var time = 3000;
+            function MyCounter(){
+              if(time<=0){
+            	  var inputOther =document.querySelectorAll('[wallettype="1"]')
+            	  var arr = Array.prototype.slice.call(inputOther)
+                  arr.forEach(function (item) {
+              		item.disabled = false;
+              		item.value='ตรวจสอบยอดเงินอีกครั้ง';
+              		item.style.backgroundColor = '';
+					});
+					time = 4000;
+              }else{
+                var inputOther =document.querySelectorAll('[wallettype="1"]')
+                var arr = Array.prototype.slice.call(inputOther)
+                arr.forEach(function (item) {
+            		item.disabled = true;
+            		item.value='ตรวจสอบยอดเงินอีกครั้ง('+time/1000+')';
+            		item.style.backgroundColor = '#cccccc';
+        		});
+                setTimeout(MyCounter, 1000);
+              }
+              time-=1000; 
+            }
+            
+        </script>
+    <style type="text/css">
+        /* Chrome, Safari, Edge, Opera */
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style></head>
+    
+    <body alink="#cc0000" bgcolor="#ffffff" topmargin="0" oncontextmenu="window.event.returnValue=false" leftmargin="0">
+        <form name="myFORM" action="members.jsp" method="POST">
+            <table border="0" cellspacing="0" cellpadding="0" width="100%" class="m_tline">
+                <tbody><tr>
+                    <td height="24">&nbsp;&nbsp;การจัดการสมาชิก: &nbsp;
+                        <select name="enable" onchange="document.myFORM.submit()" class="za_select" style="height:23px;">
+                            <option value="" selected="">ทั้งหมด</option>
+                            <option value="1">เปิดใช้</option>
+                            <option value="0">หยุดใช้</option>
+                        </select>
+                        --- ลำดับ:
+                        <select name="orderby" onchange="document.myFORM.submit();" style="height:23px;">
+                            <option value="1">ชื่อสมาชิก</option>
+                            <option value="2">ชื่อบัญชีสมาชิก</option>
+                            <option value="3" selected="">วันที่เพิ่ม</option>
+                        </select>
+                        <select name="ad_sc" onchange="document.myFORM.submit()" style="height:23px;">
+                            <option value="1" selected="">เลือกลำดับ(จากน้อยไปมาก)</option>
+                            <option value="2">เลือกลำดับ(จากใหญ่ถึงเล็ก)</option>
+                        </select>
+                        --- จำนวนหน้าทั้งหมด:
+                        <select id="pages" name="pages" onchange="document.myFORM.submit()" class="za_select" style="height:23px;">
+                            
+                            <option value="1">1</option>
+                            
+                            <option value="2">2</option>
+                            
+                            <option value="3">3</option>
+                            
+                            <option value="4">4</option>
+                            
+                            <option value="5">5</option>
+                            
+                            <option value="6">6</option>
+                            
+                            <option value="7">7</option>
+                            
+                            <option value="8">8</option>
+                            
+                            <option value="9">9</option>
+                            
+                            <option value="10">10</option>
+                            
+                            <option value="11">11</option>
+                            
+                            <option value="12">12</option>
+                            
+                            <option value="13" selected="">13</option>
+                            
+                            <option value="14">14</option>
+                            
+                            <option value="15">15</option>
+                            
+                            <option value="16">16</option>
+                            
+                            <option value="17">17</option>
+                            
+                            <option value="18">18</option>
+                            
+                            <option value="19">19</option>
+                            
+                            <option value="20">20</option>
+                            
+                            <option value="21">21</option>
+                            
+                            <option value="22">22</option>
+                            
+                            <option value="23">23</option>
+                            
+                            <option value="24">24</option>
+                            
+                            <option value="25">25</option>
+                            
+                            <option value="26">26</option>
+                            
+                            <option value="27">27</option>
+                            
+                            <option value="28">28</option>
+                            
+                            <option value="29">29</option>
+                            
+                            <option value="30">30</option>
+                            
+                            <option value="31">31</option>
+                            
+                            <option value="32">32</option>
+                            
+                            <option value="33">33</option>
+                            
+                            <option value="34">34</option>
+                            
+                            <option value="35">35</option>
+                            
+                            <option value="36">36</option>
+                            
+                            <option value="37">37</option>
+                            
+                            <option value="38">38</option>
+                            
+                            <option value="39">39</option>
+                            
+                            <option value="40">40</option>
+                            
+                            <option value="41">41</option>
+                            
+                            <option value="42">42</option>
+                            
+                            <option value="43">43</option>
+                            
+                            <option value="44">44</option>
+                            
+                            <option value="45">45</option>
+                            
+                            <option value="46">46</option>
+                            
+                            <option value="47">47</option>
+                            
+                            <option value="48">48</option>
+                            
+                            <option value="49">49</option>
+                            
+                            <option value="50">50</option>
+                            
+                            <option value="51">51</option>
+                            
+                            <option value="52">52</option>
+                            
+                            <option value="53">53</option>
+                            
+                            <option value="54">54</option>
+                            
+                            <option value="55">55</option>
+                            
+                            <option value="56">56</option>
+                            
+                            <option value="57">57</option>
+                            
+                            <option value="58">58</option>
+                            
+                            <option value="59">59</option>
+                            
+                            <option value="60">60</option>
+                            
+                            <option value="61">61</option>
+                            
+                            <option value="62">62</option>
+                            
+                            <option value="63">63</option>
+                            
+                            <option value="64">64</option>
+                            
+                            <option value="65">65</option>
+                            
+                            <option value="66">66</option>
+                            
+                            <option value="67">67</option>
+                            
+                            <option value="68">68</option>
+                            
+                            <option value="69">69</option>
+                            
+                            <option value="70">70</option>
+                            
+                            <option value="71">71</option>
+                            
+                            <option value="72">72</option>
+                            
+                            <option value="73">73</option>
+                            
+                            <option value="74">74</option>
+                            
+                            <option value="75">75</option>
+                            
+                            <option value="76">76</option>
+                            
+                            <option value="77">77</option>
+                            
+                            <option value="78">78</option>
+                            
+                            <option value="79">79</option>
+                            
+                            <option value="80">80</option>
+                            
+                            <option value="81">81</option>
+                            
+                            <option value="82">82</option>
+                            
+                            <option value="83">83</option>
+                            
+                            <option value="84">84</option>
+                            
+                            <option value="85">85</option>
+                            
+                            <option value="86">86</option>
+                            
+                            <option value="87">87</option>
+                            
+                            <option value="88">88</option>
+                            
+                            <option value="89">89</option>
+                            
+                            <option value="90">90</option>
+                            
+                            <option value="91">91</option>
+                            
+                            <option value="92">92</option>
+                            
+                            <option value="93">93</option>
+                            
+                            <option value="94">94</option>
+                            
+                            <option value="95">95</option>
+                            
+                            <option value="96">96</option>
+                            
+                            <option value="97">97</option>
+                            
+                            <option value="98">98</option>
+                            
+                            <option value="99">99</option>
+                            
+                            <option value="100">100</option>
+                            
+                            <option value="101">101</option>
+                            
+                            <option value="102">102</option>
+                            
+                            <option value="103">103</option>
+                            
+                            <option value="104">104</option>
+                            
+                            <option value="105">105</option>
+                            
+                            <option value="106">106</option>
+                            
+                            <option value="107">107</option>
+                            
+                            <option value="108">108</option>
+                            
+                            
+                        </select>
+                        / 108หน้า ---
+                        <input type="BUTTON" name="append" value="เพิ่มใหม่" onclick="document.location = './members_add.jsp'" style="height:23px;">
+                        --- ชื่อบัญชีสมาชิก：
+                        <input type="TEXT" name="search_Ename" value="" maxlength="10" size="10">
+                        <input type="BUTTON" name="search" value="ค้นหา" onclick="CheckEname(1)" style="height:23px;">
+                        <input type="BUTTON" name="cancel" value="ยกเลิก" onclick="CheckEname(0)" style="height:23px;">
+                        <input type="hidden" name="search1" value="0">
+                        <input type="hidden" name="setss" value="1"></td>
+                </tr>
+            </tbody></table>
+            <table width="760" border="0" cellspacing="0" cellpadding="0">
+                <tbody><tr>
+                    <td height="5"></td>
+                </tr>
+            </tbody></table>
+            <table border="0" cellpadding="1" cellspacing="1" class="Ntable5" id="game_table" bgcolor="E7D76B" height="18">
+                <tbody>
+                    <tr class="Ntr5" align="center" bgcolor="9C0000">
+                        <td height="21" width="110"><font color="#000000">ชื่อสมาชิก</font></td>
+                        <td height="21" width="120"><font color="#000000">ชื่อบัญชีสมาชิก</font></td>
+                        <td height="21" width="90"><font color="#000000">ยอดเงินปัจจุบัน</font></td>
+                        <td height="21" width="130"><font color="#000000">วันที่เพิ่ม</font></td>
+                        <td height="21" width="70"><font color="#000000">สถานะบัญชี</font></td>
+                        <td height="21"><font color="#000000">ฟังก์ชัน</font></td>
+                        <td height="21" width="60"><font color="#000000">เติมเงินโดยอัตโนมัติ</font></td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">417475</td>
+                        <td height="17"><span id="Club_Ename0" style="BACKGROUND-COLOR: #DADADA"> Ai108941 </span>
+                        <a href="javascript:copy_by_manage('Ai108941')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393004">0</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393004','199755','0')"></td>
+                        <td height="17">2025-01-17 23:15:19</td>
+                        <td height="17"><font id="AText0">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze0" onclick="status('0','C250000393004','Ai108941','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active0" onclick="status('0','C250000393004','Ai108941','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock0" onclick="status('0','C250000393004','Ai108941','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393004&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393004&amp;Club_Ename=Ai108941&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F0" value="1">
+                            <input type="hidden" name="value_A0" value="0">
+                            <input type="hidden" name="value_L0" value="1">
+                            <input type="hidden" name="Max_XinYong0" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393004','199755',0,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393004','199755',0,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id0" value="C250000393004|||Ai108941" onclick="Check(this.form,0)" style="display:none">
+                            <input type="hidden" name="va0" value="0.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">653099</td>
+                        <td height="17"><span id="Club_Ename1" style="BACKGROUND-COLOR: #DADADA"> Ai108942 </span>
+                        <a href="javascript:copy_by_manage('Ai108942')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393005">0.24</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393005','199755','1')"></td>
+                        <td height="17">2025-01-17 23:15:19</td>
+                        <td height="17"><font id="AText1">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze1" onclick="status('1','C250000393005','Ai108942','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active1" onclick="status('1','C250000393005','Ai108942','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock1" onclick="status('1','C250000393005','Ai108942','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393005&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393005&amp;Club_Ename=Ai108942&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F1" value="1">
+                            <input type="hidden" name="value_A1" value="0">
+                            <input type="hidden" name="value_L1" value="1">
+                            <input type="hidden" name="Max_XinYong1" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393005','199755',1,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393005','199755',1,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id1" value="C250000393005|||Ai108942" onclick="Check(this.form,1)">
+                            <input type="hidden" name="va1" value="-0.24">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">180837</td>
+                        <td height="17"><span id="Club_Ename2" style="BACKGROUND-COLOR: #DADADA"> Ai108943 </span>
+                        <a href="javascript:copy_by_manage('Ai108943')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393006">0.04</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393006','199755','2')"></td>
+                        <td height="17">2025-01-17 23:15:19</td>
+                        <td height="17"><font id="AText2">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze2" onclick="status('2','C250000393006','Ai108943','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active2" onclick="status('2','C250000393006','Ai108943','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock2" onclick="status('2','C250000393006','Ai108943','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393006&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393006&amp;Club_Ename=Ai108943&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F2" value="1">
+                            <input type="hidden" name="value_A2" value="0">
+                            <input type="hidden" name="value_L2" value="1">
+                            <input type="hidden" name="Max_XinYong2" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393006','199755',2,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393006','199755',2,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id2" value="C250000393006|||Ai108943" onclick="Check(this.form,2)">
+                            <input type="hidden" name="va2" value="-0.04">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">512023</td>
+                        <td height="17"><span id="Club_Ename3" style="BACKGROUND-COLOR: #DADADA"> Ai108944 </span>
+                        <a href="javascript:copy_by_manage('Ai108944')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393007">0.14</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393007','199755','3')"></td>
+                        <td height="17">2025-01-17 23:15:19</td>
+                        <td height="17"><font id="AText3">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze3" onclick="status('3','C250000393007','Ai108944','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active3" onclick="status('3','C250000393007','Ai108944','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock3" onclick="status('3','C250000393007','Ai108944','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393007&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393007&amp;Club_Ename=Ai108944&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F3" value="1">
+                            <input type="hidden" name="value_A3" value="0">
+                            <input type="hidden" name="value_L3" value="1">
+                            <input type="hidden" name="Max_XinYong3" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393007','199755',3,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393007','199755',3,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id3" value="C250000393007|||Ai108944" onclick="Check(this.form,3)">
+                            <input type="hidden" name="va3" value="-0.14">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">500221</td>
+                        <td height="17"><span id="Club_Ename4" style="BACKGROUND-COLOR: #DADADA"> Ai108945 </span>
+                        <a href="javascript:copy_by_manage('Ai108945')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393008">0.17</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393008','199755','4')"></td>
+                        <td height="17">2025-01-17 23:15:19</td>
+                        <td height="17"><font id="AText4">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze4" onclick="status('4','C250000393008','Ai108945','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active4" onclick="status('4','C250000393008','Ai108945','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock4" onclick="status('4','C250000393008','Ai108945','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393008&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393008&amp;Club_Ename=Ai108945&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F4" value="1">
+                            <input type="hidden" name="value_A4" value="0">
+                            <input type="hidden" name="value_L4" value="1">
+                            <input type="hidden" name="Max_XinYong4" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393008','199755',4,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393008','199755',4,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id4" value="C250000393008|||Ai108945" onclick="Check(this.form,4)">
+                            <input type="hidden" name="va4" value="-0.17">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">327400</td>
+                        <td height="17"><span id="Club_Ename5" style="BACKGROUND-COLOR: #DADADA"> Ai108946 </span>
+                        <a href="javascript:copy_by_manage('Ai108946')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393009">0</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393009','199755','5')"></td>
+                        <td height="17">2025-01-17 23:15:20</td>
+                        <td height="17"><font id="AText5">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze5" onclick="status('5','C250000393009','Ai108946','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active5" onclick="status('5','C250000393009','Ai108946','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock5" onclick="status('5','C250000393009','Ai108946','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393009&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393009&amp;Club_Ename=Ai108946&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F5" value="1">
+                            <input type="hidden" name="value_A5" value="0">
+                            <input type="hidden" name="value_L5" value="1">
+                            <input type="hidden" name="Max_XinYong5" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393009','199755',5,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393009','199755',5,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id5" value="C250000393009|||Ai108946" onclick="Check(this.form,5)" style="display:none">
+                            <input type="hidden" name="va5" value="0.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">507620</td>
+                        <td height="17"><span id="Club_Ename6" style="BACKGROUND-COLOR: #DADADA"> Ai108947 </span>
+                        <a href="javascript:copy_by_manage('Ai108947')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393010">0.14</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393010','199755','6')"></td>
+                        <td height="17">2025-01-17 23:15:20</td>
+                        <td height="17"><font id="AText6">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze6" onclick="status('6','C250000393010','Ai108947','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active6" onclick="status('6','C250000393010','Ai108947','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock6" onclick="status('6','C250000393010','Ai108947','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393010&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393010&amp;Club_Ename=Ai108947&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F6" value="1">
+                            <input type="hidden" name="value_A6" value="0">
+                            <input type="hidden" name="value_L6" value="1">
+                            <input type="hidden" name="Max_XinYong6" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393010','199755',6,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393010','199755',6,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id6" value="C250000393010|||Ai108947" onclick="Check(this.form,6)">
+                            <input type="hidden" name="va6" value="-0.14">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">763950</td>
+                        <td height="17"><span id="Club_Ename7" style="BACKGROUND-COLOR: #DADADA"> Ai108948 </span>
+                        <a href="javascript:copy_by_manage('Ai108948')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393011">0</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393011','199755','7')"></td>
+                        <td height="17">2025-01-17 23:15:20</td>
+                        <td height="17"><font id="AText7">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze7" onclick="status('7','C250000393011','Ai108948','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active7" onclick="status('7','C250000393011','Ai108948','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock7" onclick="status('7','C250000393011','Ai108948','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393011&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393011&amp;Club_Ename=Ai108948&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F7" value="1">
+                            <input type="hidden" name="value_A7" value="0">
+                            <input type="hidden" name="value_L7" value="1">
+                            <input type="hidden" name="Max_XinYong7" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393011','199755',7,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393011','199755',7,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id7" value="C250000393011|||Ai108948" onclick="Check(this.form,7)" style="display:none">
+                            <input type="hidden" name="va7" value="0.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">077893</td>
+                        <td height="17"><span id="Club_Ename8" style="BACKGROUND-COLOR: #DADADA"> Ai108949 </span>
+                        <a href="javascript:copy_by_manage('Ai108949')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393012">0.07</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393012','199755','8')"></td>
+                        <td height="17">2025-01-17 23:15:20</td>
+                        <td height="17"><font id="AText8">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze8" onclick="status('8','C250000393012','Ai108949','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active8" onclick="status('8','C250000393012','Ai108949','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock8" onclick="status('8','C250000393012','Ai108949','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393012&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393012&amp;Club_Ename=Ai108949&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F8" value="1">
+                            <input type="hidden" name="value_A8" value="0">
+                            <input type="hidden" name="value_L8" value="1">
+                            <input type="hidden" name="Max_XinYong8" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393012','199755',8,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393012','199755',8,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id8" value="C250000393012|||Ai108949" onclick="Check(this.form,8)">
+                            <input type="hidden" name="va8" value="-0.07">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">621283</td>
+                        <td height="17"><span id="Club_Ename9" style="BACKGROUND-COLOR: #DADADA"> Ai108950 </span>
+                        <a href="javascript:copy_by_manage('Ai108950')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393013">0.1</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393013','199755','9')"></td>
+                        <td height="17">2025-01-17 23:15:20</td>
+                        <td height="17"><font id="AText9">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze9" onclick="status('9','C250000393013','Ai108950','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active9" onclick="status('9','C250000393013','Ai108950','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock9" onclick="status('9','C250000393013','Ai108950','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393013&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393013&amp;Club_Ename=Ai108950&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F9" value="1">
+                            <input type="hidden" name="value_A9" value="0">
+                            <input type="hidden" name="value_L9" value="1">
+                            <input type="hidden" name="Max_XinYong9" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393013','199755',9,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393013','199755',9,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id9" value="C250000393013|||Ai108950" onclick="Check(this.form,9)">
+                            <input type="hidden" name="va9" value="-0.1">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">204956</td>
+                        <td height="17"><span id="Club_Ename10" style="BACKGROUND-COLOR: #DADADA"> Ai108951 </span>
+                        <a href="javascript:copy_by_manage('Ai108951')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393014">0.35</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393014','199755','10')"></td>
+                        <td height="17">2025-01-17 23:15:21</td>
+                        <td height="17"><font id="AText10">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze10" onclick="status('10','C250000393014','Ai108951','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active10" onclick="status('10','C250000393014','Ai108951','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock10" onclick="status('10','C250000393014','Ai108951','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393014&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393014&amp;Club_Ename=Ai108951&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F10" value="1">
+                            <input type="hidden" name="value_A10" value="0">
+                            <input type="hidden" name="value_L10" value="1">
+                            <input type="hidden" name="Max_XinYong10" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393014','199755',10,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393014','199755',10,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id10" value="C250000393014|||Ai108951" onclick="Check(this.form,10)">
+                            <input type="hidden" name="va10" value="-0.35">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">777783</td>
+                        <td height="17"><span id="Club_Ename11" style="BACKGROUND-COLOR: #DADADA"> Ai108952 </span>
+                        <a href="javascript:copy_by_manage('Ai108952')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393015">0</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393015','199755','11')"></td>
+                        <td height="17">2025-01-17 23:15:21</td>
+                        <td height="17"><font id="AText11">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze11" onclick="status('11','C250000393015','Ai108952','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active11" onclick="status('11','C250000393015','Ai108952','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock11" onclick="status('11','C250000393015','Ai108952','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393015&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393015&amp;Club_Ename=Ai108952&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F11" value="1">
+                            <input type="hidden" name="value_A11" value="0">
+                            <input type="hidden" name="value_L11" value="1">
+                            <input type="hidden" name="Max_XinYong11" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393015','199755',11,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393015','199755',11,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id11" value="C250000393015|||Ai108952" onclick="Check(this.form,11)" style="display:none">
+                            <input type="hidden" name="va11" value="0.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">075336</td>
+                        <td height="17"><span id="Club_Ename12" style="BACKGROUND-COLOR: #DADADA"> Ai108953 </span>
+                        <a href="javascript:copy_by_manage('Ai108953')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393016">0.08</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393016','199755','12')"></td>
+                        <td height="17">2025-01-17 23:15:21</td>
+                        <td height="17"><font id="AText12">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze12" onclick="status('12','C250000393016','Ai108953','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active12" onclick="status('12','C250000393016','Ai108953','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock12" onclick="status('12','C250000393016','Ai108953','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393016&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393016&amp;Club_Ename=Ai108953&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F12" value="1">
+                            <input type="hidden" name="value_A12" value="0">
+                            <input type="hidden" name="value_L12" value="1">
+                            <input type="hidden" name="Max_XinYong12" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393016','199755',12,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393016','199755',12,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id12" value="C250000393016|||Ai108953" onclick="Check(this.form,12)">
+                            <input type="hidden" name="va12" value="-0.08">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">848360</td>
+                        <td height="17"><span id="Club_Ename13" style="BACKGROUND-COLOR: #DADADA"> Ai108954 </span>
+                        <a href="javascript:copy_by_manage('Ai108954')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393017">0.02</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393017','199755','13')"></td>
+                        <td height="17">2025-01-17 23:15:21</td>
+                        <td height="17"><font id="AText13">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze13" onclick="status('13','C250000393017','Ai108954','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active13" onclick="status('13','C250000393017','Ai108954','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock13" onclick="status('13','C250000393017','Ai108954','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393017&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393017&amp;Club_Ename=Ai108954&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F13" value="1">
+                            <input type="hidden" name="value_A13" value="0">
+                            <input type="hidden" name="value_L13" value="1">
+                            <input type="hidden" name="Max_XinYong13" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393017','199755',13,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393017','199755',13,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id13" value="C250000393017|||Ai108954" onclick="Check(this.form,13)">
+                            <input type="hidden" name="va13" value="-0.02">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">949038</td>
+                        <td height="17"><span id="Club_Ename14" style="BACKGROUND-COLOR: #DADADA"> Ai108955 </span>
+                        <a href="javascript:copy_by_manage('Ai108955')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393018">0.1</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393018','199755','14')"></td>
+                        <td height="17">2025-01-17 23:15:21</td>
+                        <td height="17"><font id="AText14">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze14" onclick="status('14','C250000393018','Ai108955','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active14" onclick="status('14','C250000393018','Ai108955','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock14" onclick="status('14','C250000393018','Ai108955','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393018&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393018&amp;Club_Ename=Ai108955&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F14" value="1">
+                            <input type="hidden" name="value_A14" value="0">
+                            <input type="hidden" name="value_L14" value="1">
+                            <input type="hidden" name="Max_XinYong14" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393018','199755',14,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393018','199755',14,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id14" value="C250000393018|||Ai108955" onclick="Check(this.form,14)">
+                            <input type="hidden" name="va14" value="-0.1">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">205817</td>
+                        <td height="17"><span id="Club_Ename15" style="BACKGROUND-COLOR: #DADADA"> Ai108956 </span>
+                        <a href="javascript:copy_by_manage('Ai108956')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393019">47</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393019','199755','15')"></td>
+                        <td height="17">2025-01-17 23:15:21</td>
+                        <td height="17"><font id="AText15">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze15" onclick="status('15','C250000393019','Ai108956','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active15" onclick="status('15','C250000393019','Ai108956','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock15" onclick="status('15','C250000393019','Ai108956','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393019&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393019&amp;Club_Ename=Ai108956&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F15" value="1">
+                            <input type="hidden" name="value_A15" value="0">
+                            <input type="hidden" name="value_L15" value="1">
+                            <input type="hidden" name="Max_XinYong15" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393019','199755',15,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393019','199755',15,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id15" value="C250000393019|||Ai108956" onclick="Check(this.form,15)">
+                            <input type="hidden" name="va15" value="-47.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">350536</td>
+                        <td height="17"><span id="Club_Ename16" style="BACKGROUND-COLOR: #DADADA"> Ai108957 </span>
+                        <a href="javascript:copy_by_manage('Ai108957')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393020">47</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393020','199755','16')"></td>
+                        <td height="17">2025-01-17 23:15:22</td>
+                        <td height="17"><font id="AText16">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze16" onclick="status('16','C250000393020','Ai108957','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active16" onclick="status('16','C250000393020','Ai108957','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock16" onclick="status('16','C250000393020','Ai108957','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393020&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393020&amp;Club_Ename=Ai108957&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F16" value="1">
+                            <input type="hidden" name="value_A16" value="0">
+                            <input type="hidden" name="value_L16" value="1">
+                            <input type="hidden" name="Max_XinYong16" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393020','199755',16,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393020','199755',16,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id16" value="C250000393020|||Ai108957" onclick="Check(this.form,16)">
+                            <input type="hidden" name="va16" value="-47.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">093699</td>
+                        <td height="17"><span id="Club_Ename17" style="BACKGROUND-COLOR: #DADADA"> Ai108958 </span>
+                        <a href="javascript:copy_by_manage('Ai108958')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393021">47</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393021','199755','17')"></td>
+                        <td height="17">2025-01-17 23:15:22</td>
+                        <td height="17"><font id="AText17">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze17" onclick="status('17','C250000393021','Ai108958','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active17" onclick="status('17','C250000393021','Ai108958','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock17" onclick="status('17','C250000393021','Ai108958','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393021&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393021&amp;Club_Ename=Ai108958&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F17" value="1">
+                            <input type="hidden" name="value_A17" value="0">
+                            <input type="hidden" name="value_L17" value="1">
+                            <input type="hidden" name="Max_XinYong17" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393021','199755',17,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393021','199755',17,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id17" value="C250000393021|||Ai108958" onclick="Check(this.form,17)">
+                            <input type="hidden" name="va17" value="-47.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">838730</td>
+                        <td height="17"><span id="Club_Ename18" style="BACKGROUND-COLOR: #DADADA"> Ai108959 </span>
+                        <a href="javascript:copy_by_manage('Ai108959')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393022">47</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393022','199755','18')"></td>
+                        <td height="17">2025-01-17 23:15:22</td>
+                        <td height="17"><font id="AText18">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze18" onclick="status('18','C250000393022','Ai108959','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active18" onclick="status('18','C250000393022','Ai108959','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock18" onclick="status('18','C250000393022','Ai108959','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393022&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393022&amp;Club_Ename=Ai108959&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F18" value="1">
+                            <input type="hidden" name="value_A18" value="0">
+                            <input type="hidden" name="value_L18" value="1">
+                            <input type="hidden" name="Max_XinYong18" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393022','199755',18,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393022','199755',18,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id18" value="C250000393022|||Ai108959" onclick="Check(this.form,18)">
+                            <input type="hidden" name="va18" value="-47.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">931350</td>
+                        <td height="17"><span id="Club_Ename19" style="BACKGROUND-COLOR: #DADADA"> Ai108960 </span>
+                        <a href="javascript:copy_by_manage('Ai108960')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393023">47</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393023','199755','19')"></td>
+                        <td height="17">2025-01-17 23:15:22</td>
+                        <td height="17"><font id="AText19">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze19" onclick="status('19','C250000393023','Ai108960','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active19" onclick="status('19','C250000393023','Ai108960','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock19" onclick="status('19','C250000393023','Ai108960','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393023&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393023&amp;Club_Ename=Ai108960&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F19" value="1">
+                            <input type="hidden" name="value_A19" value="0">
+                            <input type="hidden" name="value_L19" value="1">
+                            <input type="hidden" name="Max_XinYong19" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393023','199755',19,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393023','199755',19,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id19" value="C250000393023|||Ai108960" onclick="Check(this.form,19)">
+                            <input type="hidden" name="va19" value="-47.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">578765</td>
+                        <td height="17"><span id="Club_Ename20" style="BACKGROUND-COLOR: #DADADA"> Ai108961 </span>
+                        <a href="javascript:copy_by_manage('Ai108961')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393024">47</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393024','199755','20')"></td>
+                        <td height="17">2025-01-17 23:15:22</td>
+                        <td height="17"><font id="AText20">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze20" onclick="status('20','C250000393024','Ai108961','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active20" onclick="status('20','C250000393024','Ai108961','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock20" onclick="status('20','C250000393024','Ai108961','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393024&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393024&amp;Club_Ename=Ai108961&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F20" value="1">
+                            <input type="hidden" name="value_A20" value="0">
+                            <input type="hidden" name="value_L20" value="1">
+                            <input type="hidden" name="Max_XinYong20" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393024','199755',20,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393024','199755',20,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id20" value="C250000393024|||Ai108961" onclick="Check(this.form,20)">
+                            <input type="hidden" name="va20" value="-47.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">034162</td>
+                        <td height="17"><span id="Club_Ename21" style="BACKGROUND-COLOR: #DADADA"> Ai108962 </span>
+                        <a href="javascript:copy_by_manage('Ai108962')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393025">47</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393025','199755','21')"></td>
+                        <td height="17">2025-01-17 23:15:22</td>
+                        <td height="17"><font id="AText21">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze21" onclick="status('21','C250000393025','Ai108962','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active21" onclick="status('21','C250000393025','Ai108962','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock21" onclick="status('21','C250000393025','Ai108962','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393025&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393025&amp;Club_Ename=Ai108962&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F21" value="1">
+                            <input type="hidden" name="value_A21" value="0">
+                            <input type="hidden" name="value_L21" value="1">
+                            <input type="hidden" name="Max_XinYong21" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393025','199755',21,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393025','199755',21,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id21" value="C250000393025|||Ai108962" onclick="Check(this.form,21)">
+                            <input type="hidden" name="va21" value="-47.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">641112</td>
+                        <td height="17"><span id="Club_Ename22" style="BACKGROUND-COLOR: #DADADA"> Ai108963 </span>
+                        <a href="javascript:copy_by_manage('Ai108963')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393026">47</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393026','199755','22')"></td>
+                        <td height="17">2025-01-17 23:15:23</td>
+                        <td height="17"><font id="AText22">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze22" onclick="status('22','C250000393026','Ai108963','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active22" onclick="status('22','C250000393026','Ai108963','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock22" onclick="status('22','C250000393026','Ai108963','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393026&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393026&amp;Club_Ename=Ai108963&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F22" value="1">
+                            <input type="hidden" name="value_A22" value="0">
+                            <input type="hidden" name="value_L22" value="1">
+                            <input type="hidden" name="Max_XinYong22" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393026','199755',22,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393026','199755',22,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id22" value="C250000393026|||Ai108963" onclick="Check(this.form,22)">
+                            <input type="hidden" name="va22" value="-47.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">305142</td>
+                        <td height="17"><span id="Club_Ename23" style="BACKGROUND-COLOR: #DADADA"> Ai108964 </span>
+                        <a href="javascript:copy_by_manage('Ai108964')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393027">47</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393027','199755','23')"></td>
+                        <td height="17">2025-01-17 23:15:23</td>
+                        <td height="17"><font id="AText23">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze23" onclick="status('23','C250000393027','Ai108964','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active23" onclick="status('23','C250000393027','Ai108964','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock23" onclick="status('23','C250000393027','Ai108964','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393027&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393027&amp;Club_Ename=Ai108964&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F23" value="1">
+                            <input type="hidden" name="value_A23" value="0">
+                            <input type="hidden" name="value_L23" value="1">
+                            <input type="hidden" name="Max_XinYong23" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393027','199755',23,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393027','199755',23,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id23" value="C250000393027|||Ai108964" onclick="Check(this.form,23)">
+                            <input type="hidden" name="va23" value="-47.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">003449</td>
+                        <td height="17"><span id="Club_Ename24" style="BACKGROUND-COLOR: #DADADA"> Ai108965 </span>
+                        <a href="javascript:copy_by_manage('Ai108965')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393028">0</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393028','199755','24')"></td>
+                        <td height="17">2025-01-17 23:15:23</td>
+                        <td height="17"><font id="AText24">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze24" onclick="status('24','C250000393028','Ai108965','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active24" onclick="status('24','C250000393028','Ai108965','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock24" onclick="status('24','C250000393028','Ai108965','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393028&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393028&amp;Club_Ename=Ai108965&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F24" value="1">
+                            <input type="hidden" name="value_A24" value="0">
+                            <input type="hidden" name="value_L24" value="1">
+                            <input type="hidden" name="Max_XinYong24" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393028','199755',24,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393028','199755',24,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id24" value="C250000393028|||Ai108965" onclick="Check(this.form,24)" style="display:none">
+                            <input type="hidden" name="va24" value="0.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">473066</td>
+                        <td height="17"><span id="Club_Ename25" style="BACKGROUND-COLOR: #DADADA"> Ai108966 </span>
+                        <a href="javascript:copy_by_manage('Ai108966')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393029">0</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393029','199755','25')"></td>
+                        <td height="17">2025-01-17 23:15:23</td>
+                        <td height="17"><font id="AText25">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze25" onclick="status('25','C250000393029','Ai108966','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active25" onclick="status('25','C250000393029','Ai108966','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock25" onclick="status('25','C250000393029','Ai108966','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393029&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393029&amp;Club_Ename=Ai108966&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F25" value="1">
+                            <input type="hidden" name="value_A25" value="0">
+                            <input type="hidden" name="value_L25" value="1">
+                            <input type="hidden" name="Max_XinYong25" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393029','199755',25,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393029','199755',25,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id25" value="C250000393029|||Ai108966" onclick="Check(this.form,25)" style="display:none">
+                            <input type="hidden" name="va25" value="0.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">317633</td>
+                        <td height="17"><span id="Club_Ename26" style="BACKGROUND-COLOR: #DADADA"> Ai108967 </span>
+                        <a href="javascript:copy_by_manage('Ai108967')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393030">0.19</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393030','199755','26')"></td>
+                        <td height="17">2025-01-17 23:15:23</td>
+                        <td height="17"><font id="AText26">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze26" onclick="status('26','C250000393030','Ai108967','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active26" onclick="status('26','C250000393030','Ai108967','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock26" onclick="status('26','C250000393030','Ai108967','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393030&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393030&amp;Club_Ename=Ai108967&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F26" value="1">
+                            <input type="hidden" name="value_A26" value="0">
+                            <input type="hidden" name="value_L26" value="1">
+                            <input type="hidden" name="Max_XinYong26" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393030','199755',26,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393030','199755',26,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id26" value="C250000393030|||Ai108967" onclick="Check(this.form,26)">
+                            <input type="hidden" name="va26" value="-0.19">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">797494</td>
+                        <td height="17"><span id="Club_Ename27" style="BACKGROUND-COLOR: #DADADA"> Ai108968 </span>
+                        <a href="javascript:copy_by_manage('Ai108968')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393031">0</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393031','199755','27')"></td>
+                        <td height="17">2025-01-17 23:15:23</td>
+                        <td height="17"><font id="AText27">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze27" onclick="status('27','C250000393031','Ai108968','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active27" onclick="status('27','C250000393031','Ai108968','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock27" onclick="status('27','C250000393031','Ai108968','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393031&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393031&amp;Club_Ename=Ai108968&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F27" value="1">
+                            <input type="hidden" name="value_A27" value="0">
+                            <input type="hidden" name="value_L27" value="1">
+                            <input type="hidden" name="Max_XinYong27" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393031','199755',27,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393031','199755',27,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id27" value="C250000393031|||Ai108968" onclick="Check(this.form,27)" style="display:none">
+                            <input type="hidden" name="va27" value="0.0">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">443594</td>
+                        <td height="17"><span id="Club_Ename28" style="BACKGROUND-COLOR: #DADADA"> Ai108969 </span>
+                        <a href="javascript:copy_by_manage('Ai108969')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393032">0.14</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393032','199755','28')"></td>
+                        <td height="17">2025-01-17 23:15:24</td>
+                        <td height="17"><font id="AText28">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze28" onclick="status('28','C250000393032','Ai108969','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active28" onclick="status('28','C250000393032','Ai108969','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock28" onclick="status('28','C250000393032','Ai108969','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393032&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393032&amp;Club_Ename=Ai108969&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F28" value="1">
+                            <input type="hidden" name="value_A28" value="0">
+                            <input type="hidden" name="value_L28" value="1">
+                            <input type="hidden" name="Max_XinYong28" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393032','199755',28,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393032','199755',28,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id28" value="C250000393032|||Ai108969" onclick="Check(this.form,28)">
+                            <input type="hidden" name="va28" value="-0.14">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" onmouseout="this.bgColor = '#FFFFFF';" onmouseover="this.bgColor = '#FFCC30';" align="center" bgcolor="#FFFFFF">
+                        <td height="17">949720</td>
+                        <td height="17"><span id="Club_Ename29" style="BACKGROUND-COLOR: #DADADA"> Ai108970 </span>
+                        <a href="javascript:copy_by_manage('Ai108970')"><img src="../../../common/image/Multimedia.jpg" style="width: 20px;height: 20px;" title="Copy"></a></td>
+                        <td height="17"><font id="Now_XinYong_C250000393033">0.07</font><input type="button" value="ตรวจสอบยอดเงินอีกครั้ง" name="Button" wallettype="1" onclick="getwallet('C250000393033','199755','29')"></td>
+                        <td height="17">2025-01-17 23:15:24</td>
+                        <td height="17"><font id="AText29">เปิดใช้</font></td>
+                        <td height="17">
+                            <a href="javascript:void(0)" name="freeze29" onclick="status('29','C250000393033','Ai108970','F')">อาญัติ</a>
+                            / <a href="javascript:void(0)" name="active29" onclick="status('29','C250000393033','Ai108970','A')">หยุดใช้</a>
+                            / <a href="javascript:void(0)" name="Lock29" onclick="status('29','C250000393033','Ai108970','L')">ล็อค</a>
+                            / <a href="members_update.jsp?id=C250000393033&amp;agent_id=199755">แก้ไขข้อมูล</a>
+                            / <a href="members_set.jsp?id=C250000393033&amp;Club_Ename=Ai108970&amp;UnitKey=199755">ตั้งค่ารายละเอียด</a>
+                            <input type="hidden" name="value_F29" value="1">
+                            <input type="hidden" name="value_A29" value="0">
+                            <input type="hidden" name="value_L29" value="1">
+                            <input type="hidden" name="Max_XinYong29" value="0">
+                            
+                            / <a href="javascript:void(0)" onclick="show_win(1,'C250000393033','199755',29,event);">เติมเงิน</a>
+                            / <a href="javascript:void(0)" onclick="show_win(2,'C250000393033','199755',29,event);">ถอนออก</a>
+                            
+                        </td>
+                        <td height="17">
+                            <!--2014-07-29, checkbox will display when chongZhi Edu is 0-->
+                            <input type="checkbox" name="id29" value="C250000393033|||Ai108970" onclick="Check(this.form,29)">
+                            <input type="hidden" name="va29" value="-0.07">
+                        </td>
+                    </tr>
+                    
+                    <tr class="b_tline_ft" id="trsub" bgcolor="#FFFFFF">
+                        <td colspan="7" align="right">วงเงินปัจจุบันของเอเย่นต์<font id="F_Now_XinYong_Red" color="red">20903.415</font> / กรุณาเลือกสมาชิกที่จะเติมเงินโดยอัตโนมัติ เลือกทั้งหมด [ <input type="checkbox" name="chkall" value="on" onclick="CheckAll(this.form)"> ]
+                            <input type="hidden" name="id_shu" value="30">
+                            <input type="hidden" name="a" value="23">
+                            <input type="hidden" name="ed">
+                            <input type="hidden" name="now" value="0">
+                            <input type="hidden" name="C_Now_XinYong" value="-424.84999999999997">
+                            <input type="hidden" name="F_Now_XinYong" value="20903.415">
+                            <input type="BUTTON" name="BUTTON" value="เติมเงินโดยอัตโนมัติ" onclick="return lcc();" style="height:23px;">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <table border="0" cellpadding="1" cellspacing="1" id="game_table" height="18" class="Ntable5">
+                <tbody><tr align="center" bgcolor="ffffff">
+                    <td align="center" width="40">ออนไลน์</td>
+                    <td align="center" width="40"><table><tbody><tr height="15"><td bgcolor="00FF24" width="40"></td></tr></tbody></table></td>
+                    <td align="center" width="40">ออฟไลน์</td>
+                    <td align="center" width="40"><table><tbody><tr height="15"><td bgcolor="DADADA" width="40"></td></tr></tbody></table></td>
+                </tr>
+            </tbody></table>
+            
+            <div id="divChongZhi" style="display: none; position: absolute; width: 350px; height: 46px; visibility: visible;" class="ui-draggable">
+                <table bgcolor="#b0c4de" border="0" cellpadding="2" cellspacing="1" width="250" height="46">
+                    <tbody><tr class="zzh_edit">
+                        <td width="325" height="25"><li>
+                            <span id="values1"></span>
+                            <span id="values2"></span>
+                        </li></td>
+                        <td width="25" height="25"><a onclick="close_win();" style="CURSOR: hand"><img src="../image/edit_dot.gif"></a></td>
+                        <input type="hidden" name="types" id="types" value="">
+                    </tr>
+                    <tr id="r_2">
+                        <td colspan="2" height="25">ตรวจเช็ครหัส
+                            <input id="Pass" class="za_text" maxlength="20" size="10" type="password">
+                            <input id="ok2" type="button" onclick="Chk_pass();" value="ตรวจเช็ค">
+                        </td>
+                    </tr>
+                    <tr id="r_1">
+                        <td colspan="2" height="25">จำนวนเงิน
+                            <input id="number" class="za_text" maxlength="20" size="10" type="number" step="0.0001" min="0" onkeypress="return CheckKey(event);" style="width:90;">
+                            <input id="ok" type="button" onclick="Chk(this.form);" value="">
+                        </td>
+                    </tr>
+                    <tr id="r_3">
+                        <td colspan="2" height="25">หมายเหตุ
+                            <input type="text" id="Remark" class="za_text" w="" maxlength="20" size="18">
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+            
+        </form>
+        <script type="text/javascript">
+        
+            $('#divChongZhi').draggable();
+            var Club_id_S='';
+            var UnitKey_S='';
+            var id_i='';
+            function Chk_pass(){
+                var pass2 = document.all.Pass.value;
+                var oBao = createXHR();
+                oBao.open("POST", "/common/CheckPassMD5.jsp?pass="+pass2, false);
+                oBao.send();
+                var r = LTrim(unescape(oBao.responseText));
+                if(r==1){
+                    alert('ตรวจเช็ครหัสสำเร็จ');
+                    document.all.r_2.style.display = 'none';
+                    document.all.r_1.style.display = 'block';
+                    document.all.r_3.style.display = 'block';
+                    show_win2(document.all.types.value);
+                }else{
+                	alert('ตรวจเช็ครหัสไม่สำเร็จ โปรดลองใหม่');
+                    document.all.Pass.value='';
+                }
+            }
+            
+            function show_win(v,Club_id,UnitKey,i,event){
+                Club_id_S=Club_id;
+                UnitKey_S=UnitKey;
+                id_i=i;
+                var divChongZhi=document.all.divChongZhi;
+                if(event.clientY!=null && event.clientY!=undefined){ 
+                    divChongZhi.style.top=document.body.scrollTop+event.clientY+15;
+                    divChongZhi.style.left =document.body.scrollLeft+event.clientX-20;
+                }else{
+                    divChongZhi.style.top=document.body.scrollTop+event.pageY+15;
+                    divChongZhi.style.left =document.body.scrollLeft+event.pageX-20;
+                }
+                divChongZhi.style.display = 'block';
+                document.all.types.value = v;
+                document.all.r_1.style.display = 'none';
+                document.all.r_3.style.display = 'none';
+                document.all.r_2.style.display = 'block';
+                if(v == 1){
+                    document.all.values1.innerHTML = '<font color=#FFFFFF>'+document.getElementById('Club_Ename'+id_i).innerHTML+'เติมเงิน</font>';
+                }else{
+                    document.all.values1.innerHTML = '<font color=#FFFFFF>'+document.getElementById('Club_Ename'+id_i).innerHTML+'ถอนออก</font>';
+                }
+                document.all.values2.innerHTML = ''; 
+            }
+            
+            function show_win2(v){
+                if(v == 1){
+                	document.all.values2.innerHTML = ' ( <font color=blue>วงเงินที่เติมได้ของสายบน</font>:<font color=red>'+document.all.F_Now_XinYong.value+'</font> ) '; 
+                    document.all.ok.value = 'เติมเงิน';
+                }else{
+                	document.all.values2.innerHTML = ' ( <font color=blue>วงเงินที่ถอนได้ของสายล่าง</font>:<font color=red>'+document.getElementById('Now_XinYong_'+Club_id_S).innerHTML+'</font> ) ';
+                    document.all.ok.value = 'ถอนออก';
+                }
+            }
+            
+            function close_win(){document.all.divChongZhi.style.display = 'none';}
+            //當確認按鍵按下，檢查Remark欄位有沒有特殊符號。
+            function Chk(form){
+                if(checkSymbol(document.getElementById('Remark').value)){return false;}
+                var number = document.all.number.value;
+                if(isNaN(number)||number<=0){
+                	alert('โปรดใส่ตัวเลข');
+                	document.all.number.focus();
+                	return false;
+                }
+                if(!confirm('ยืนยันการแก้ไข')){return false;}
+                var oBao = createXHR();
+                oBao.open("POST", "/common/ChongZhi.jsp?type=m&types="+document.all.types.value+"&c_fid="+UnitKey_S+"&c_id="+Club_id_S+"&Edu="+number+"&Remark="+document.all.Remark.value, false);
+                oBao.send();
+                var r = LTrim(unescape(oBao.responseText));
+                if (r=="toindex"){
+                	top.location.href='../index.jsp';
+                	return false;
+                }else if (r=="ZhuanLiShi"){
+                	alert('เวลาคำนวณและปิดบัญชี กรุณาลองใหม่ภายหลัง');
+                	return false;
+                }
+                var Array = r.split(",");
+                
+                if (Array[0]==1){
+                	if (document.all["id"+id_i].checked){
+                		document.all["id"+id_i].checked=false;
+                		Check(form, id_i);
+                	}
+                	Array[1] = new Number(Array[1]);
+                	Array[2] = new Number(Array[2]);
+                    document.getElementById('F_Now_XinYong_Red').innerHTML = Array[2];
+                    document.all.F_Now_XinYong.value = Array[2];
+                    XinYongChange(id_i,Club_id_S,Array[1])
+                    //window.parent.frames.topFrame.location.reload();
+                    close_win();
+                    if(document.all.types.value-1==0){
+                    	alert('เติมเงินสำเร็จ');
+                    }else{
+                    	alert('ถอนออกสำเร็จ');
+                    }
+                }else if (Array[0]==-1){
+                	alert('วงเงินเครดิตสายบนไม่พอ  เติมเงินไม่สำเร็จ');
+                }else if (Array[0]==-2){
+                	alert('วงเงินที่ถอนออก มากกว่าเครดิตปัจจุบันไม่ได้');
+                }else if (Array[0]==-3){
+                	alert('เมื่อสมาชิกออนไลน์จะทำรายการเติมถอนไม่ได้');
+                }else if (Array[0]==-4){
+                	alert('ขออภัยไม่สามารถทำรายการซ้ำภายใน10วินาที!');
+                }else{
+                	alert('ล้มเหลว!');
+                }
+            }
+            function XinYongChange(i,Club_id,XinYong){
+            	var Max_XinYong = document.all['Max_XinYong'+i].value;
+                var eds_new = Max_XinYong - XinYong;
+                var eds_old = document.all['va'+i].value;
+                var C_Now_XinYong = document.all.C_Now_XinYong.value;
+                C_Now_XinYong = C_Now_XinYong - eds_old + eds_new;
+                document.all.C_Now_XinYong.value = C_Now_XinYong;
+                document.getElementById('Now_XinYong_'+Club_id).innerHTML = XinYong;
+                document.all['va'+i].value = eds_new;
+                var a = document.all.a.value
+                if(eds_new==0){
+                	document.all["id"+i].style.display = 'none';
+                	a--;
+                }else{
+                	document.all["id"+i].style.display = 'block';
+                	a++;
+                }
+                if(a>0){
+                	document.all.trsub.style.display = 'table-row';
+                }else{
+                	document.all.trsub.style.display = 'none';
+                }
+                document.all.a.value=a;
+            }
+            
+            function CheckKey(event){
+                var Code;
+                if(document.event !=null && document.event!=undefined){
+                    Code=event.keyCode;
+                }else{
+                    Code=event.charCode;
+                }
+                if(Code == 13) return false;
+                if(Code == 46) return true;
+                if((Code < 48 || Code > 57) && (Code > 95 || Code < 106)){alert('ขออภัย โปรดป้อนตัวเลข'); return false;}
+            }
+            
+            //2014-11-24-yang 加入檢查特殊符號的function。
+            function checkSymbol(importArgs){
+                var passRag = /[@"\'\\\?*#%\^&\|]/;
+                if (importArgs.length>14||passRag.test(importArgs)) {
+                    alert("จำกัดตัวอักษร：ไม่สมารถป้อนตัวอักษรเกิน14ตัวและไม่สามารถป้อนเครื่องหมายสัญลักษณ์เช่น  \u005c  @‘ ? *# % ^ “ & |เป็นต้น");
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        
+            
+            function lcc(){
+                var i2=0;
+                for (var j1 = 0; j1 < 30; j1++) {
+                    if(document.all['id'+j1].checked)
+                        i2++;
+                    }
+                if(i2==0){
+                    alert('ขออภัย,กรุณาเลือกรายการ');
+                    return false;
+                }else{
+                    document.all.ed.value = 'ChongZhi';
+                    if(!confirm('ยืนยันเติมเงินโดยอัตโนมัติหรือไม่'))
+                        return false;
+                    document.myFORM.submit();
+                }
+            }
+            
+            function Check(form, i) {
+                var aa = eval("document.all.va" + i);
+                if (eval("document.all.id" + i + ".checked")) {
+                    document.all.now.value = Math.round(document.all.now.value) + Math.round(aa.value);
+                } else {
+                    document.all.now.value = Math.round(document.all.now.value) - Math.round(aa.value);
+                    document.all.chkall.checked=false;
+                }
+                if (Math.round(document.all.now.value) > Math.round(document.all.F_Now_XinYong.value)) {
+                    alert("จำนวนเงินทั้งหมดที่เติมเกินยอดเงินคงเหลือของเมเนจเจ้อร์");
+                    if (eval("document.all.id" + i + ".checked")) {
+                        document.all.now.value = Math.round(document.all.now.value) - Math.round(aa.value);
+                    } else {
+                        document.all.now.value = Math.round(document.all.now.value) + Math.round(aa.value);
+                    }
+                    eval("document.all.id" + i + ".checked = !(document.all.id" + i + ".checked)");
+                }
+            }
+            
+            function CheckAll(form) {
+                for (var i = 0; i < form.elements.length; i++) {
+                    var e = form.elements[i];
+                    if (e.name != 'chkall') {
+                        e.checked = form.chkall.checked;
+                    }
+                }
+
+                if (document.all.chkall.checked) {
+                    document.all.now.value = document.all.C_Now_XinYong.value;
+                } else {
+                    document.all.now.value = 0;
+                }
+                if (Math.round(document.all.now.value) > Math.round(document.all.F_Now_XinYong.value)) {
+                    alert("จำนวนเงินทั้งหมดที่เติมเกินยอดเงินคงเหลือของเมเนจเจ้อร์");
+                    document.all.chkall.checked = !(document.all.chkall.checked);
+                    for (var i = 0; i < form.elements.length; i++) {
+                        var e = form.elements[i];
+                        if (e.name != 'chkall') {
+                            e.checked = form.chkall.checked;
+                        }
+                    }
+                    document.all.now.value = 0;
+                }
+            }
+            
+            function CheckEname(search1) {
+            	var Club_Ename = document.all.search_Ename.value;
+            	var regExp = /^[\d|a-zA-Z|_|@]+$/;
+            	if(search1==1){
+            		if (Club_Ename=='') {
+            			document.all.search_Ename.focus();
+                        alert('โปรดป้อนบัญชี');
+                    }else if (!regExp.test(Club_Ename)) {
+                        document.all.search_Ename.focus();
+                        alert('ชื่อยูสเซอร์จะต้องมีความยาว 5-10 ตัวและจะต้องมีตัวพิมพ์ใหญ่ตัวพิมพ์เล็กตัวเลขและตัวอักษรจะต้องเป็นภาษาอังกฤษเท่านั้น');
+                    }else{
+                    	document.all.search1.value=search1;
+                    	document.myFORM.submit();
+                    }
+                }else{
+                	document.all.search1.value=search1;
+                	document.myFORM.submit();
+                }
+            }
+            
+            function status(i,id,Club_Ename,status){
+            	if(status=="F"){
+            		if (!confirm("ยืนยันอาญัติหรือ(ไม่อาญัติ)ชื่อบัญชีนี้!"))
+            			return;
+            		var value=document.all["value_F"+i];
+                	var oBao = createXHR();
+                    oBao.open("POST", "/common/status_member.jsp?id="+id+"&Club_Ename="+Club_Ename+"&status=F&value="+value.value, false);
+                    oBao.send();
+                    var r = LTrim(unescape(oBao.responseText));
+                    if(r=="toindex"){
+                    	top.location.href='../index.jsp';
+                    }else if(r==1){
+                    	alert('แก้ไขสำเร็จ ');
+                    	value.value=1-value.value;
+                    	if(value.value==0){
+                    		document.all["freeze"+i].innerHTML="<span style='background-color: ; color: red;'>ปลดอาญัติ</span>";
+                    	}else{
+                    		document.all["freeze"+i].innerHTML="อาญัติ";
+                    	}
+                    }else{
+                    	alert('แก้ไขไม่สำเร็จ');
+                    }
+            	}else if(status=="A"){
+            		if (!confirm("ยืนยันหยุดใช้หรือ(เปิดใช้)สมาชิก"))
+            			return;
+            		var value=document.all["value_A"+i];
+                	var oBao = createXHR();
+                    oBao.open("POST", "/common/status_member.jsp?id="+id+"&Club_Ename="+Club_Ename+"&status=A&value="+value.value, false);
+                    oBao.send();
+                    var r = LTrim(unescape(oBao.responseText));
+                    if(r=="toindex"){
+                    	top.location.href='../index.jsp';
+                    }else if(r==1){
+                    	alert('แก้ไขสำเร็จ ');
+                    	value.value=1-value.value;
+                    	if(value.value==0){
+                    		document.all["active"+i].innerHTML="หยุดใช้";
+                    		document.all["AText"+i].innerHTML="เปิดใช้";
+                    	}else{
+                    		document.all["active"+i].innerHTML="เปิดใช้";
+                    		document.all["AText"+i].innerHTML="<span style='background-color: red; color: white;'>หยุดใช้</span>";
+                    	}
+                    }else{
+                    	alert('แก้ไขไม่สำเร็จ');
+                    }
+            	}else if(status=="L"){
+            		if (!confirm("ยืนยันล็อคหรือ(ปลดล็อค)ชื่อบัญชีนี้!"))
+            			return;
+            		var value=document.all["value_L"+i];
+                	var oBao = createXHR();
+                    oBao.open("POST", "/common/status_member.jsp?id="+id+"&Club_Ename="+Club_Ename+"&status=L&value="+value.value, false);
+                    oBao.send();
+                    var r = LTrim(unescape(oBao.responseText));
+                    if(r=="toindex"){
+                    	top.location.href='../index.jsp';
+                    }else if(r==1){
+                    	alert('แก้ไขสำเร็จ ');
+                    	value.value=1-value.value;
+                    	if(value.value==0){
+                    		document.all["Lock"+i].innerHTML="<span style='background-color: lime; color: black;'>ปลดล็อค</span>";
+                    	}else{
+                    		document.all["Lock"+i].innerHTML="ล็อค";
+                    	}
+                    }else if(r==-2){
+                    	alert('มีรีพอร์ตเกมส์สล็อตยังไม่ได้คำนวนผล ，ไม่สามารถปลดล็อกได้');
+                    }else{
+                    	alert('แก้ไขไม่สำเร็จ');
+                    }
+            	}
+            }
+        </script>
+    
+
+
+</body></html>

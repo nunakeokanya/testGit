@@ -1,0 +1,60 @@
+{% extends 'layouts/base.html' %} {# ສົມມຸດວ່າມີ base template ທີ່ທ່ານນຳໃຊ້ຢູ່ #}
+{% load static %}
+
+{% block title %}ຕັ້ງຄ່າ ແລະ ນຳເຂົ້າຂໍ້ມູນບິນອັດຕະໂນມັດ{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">ຕັ້ງຄ່າ ແລະ ນຳເຂົ້າຂໍ້ມູນບິນອັດຕະໂນມັດ (ໜ້າ AddBin Auto)</h2>
+    <hr>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="ປິດ"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card p-4 shadow-sm">
+        <p class="text-muted">ກະລຸນາປ້ອນລາຍລະອຽດການເຂົ້າສູ່ລະບົບ ແລະ ຕັ້ງຄ່າການດຶງຂໍ້ມູນຈາກເວັບໄຊຕ໌ພາຍນອກ</p>
+        
+        <form method="post" action="{% url 'app888:add_bin_sup888' %}" id="scrapingSettingsForm">
+            {% csrf_token %}
+            
+            {# ສະແດງຟອມທີ່ສ້າງຈາກ Django Form (ScrapingSettingsForm) #}
+            {# form.as_p ຈະສະແດງແຕ່ລະຊ່ອງເປັນ Paragraph ພ້ອມປ້າຍຊື່ (label) ແລະຊ່ອງປ້ອນຂໍ້ມູນ (input field) #}
+            {{ form.as_p }} 
+
+            <button type="submit" class="btn btn-primary me-2">
+                <i class="fas fa-play-circle"></i> ເລີ່ມດຶງຂໍ້ມູນ
+            </button>
+            <a href="{% url 'app888:index888' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> ກັບໜ້າຫຼັກ
+            </a>
+        </form>
+    </div>
+
+    {# Loading Spinner - ຈະສະແດງເມື່ອຟອມຖືກສົ່ງ #}
+    <div id="loadingSpinner" style="display: none;" class="text-center mt-4">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">ກຳລັງດຶງຂໍ້ມູນ...</span>
+        </div>
+        <p class="mt-2">ກຳລັງດຶງຂໍ້ມູນຈາກເວັບໄຊຕ໌, ກະລຸນາລໍຖ້າຈັກໜ້ອຍ...</p>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById('scrapingSettingsForm').addEventListener('submit', function() {
+        document.getElementById('loadingSpinner').style.display = 'block';
+        const submitButton = this.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = true; 
+            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ກຳລັງດຶງຂໍ້ມູນ...'; 
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<h3><i class="fa-solid fa-calculator"></i>... ເຄດິດ  -> LAK</h3>
+
+<div class="row">
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <div class="col-sm-4 me-sm-1 p-2" style="background-color: rgba(212, 223, 228, 0.692);">
+        <h5>ແລກປ່ຽນເຄຣດິດ ເປັນ LAK</h5>
+            <form method="post">
+                {% csrf_token %}
+                <label for="credit">ຈຳນວນເຄຣດິດ:</label>
+                <input type="text" id="credit" name="credit"><br><br>
+                <button class="btn btn-primary" type="submit">ຄຳນວນເປັນກີບ</button>
+            </form>
+        
+            {% if price_lak is not None %}
+            <h5>ຜົນໄດ້ຮັບ (ເຄຣດິດ -> LAK ):</h5>
+            <p>ຈຳນວນເຄຣດິດ:<span class="fw-bold border fs-4 text-info"> {{ credit }}</span></p>
+            <p>ຈຳນວນເງິນກີບ (ປັດລົງ 1,000): {{ price_lak }} LAK</p>
+            <p>ໂບນັດ (3%): {{ price_bonus }} THB</p>
+            <p>ຈຳນວນເງິນບາດ (ຫຼັງຫັກໂບນັດ): {{ price_thb }} THB</p>
+            {% endif %}
+    </div>
+    
+    <div class="col-sm-4 p-2" style="background-color: rgba(212, 223, 228, 0.692);">
+
+        <h5>ແລກປ່ຽນກີບ LAK ເປັນ ເຄຣດິດ</h5>
+        <form method="post">
+            {% csrf_token %}
+            <label for="kib">ຈຳນວນກີບ:</label>
+            <input type="text" id="kib" name="kib"><br><br>
+            <button class="btn btn-primary" type="submit">ຄຳນວນເປັນເຄຣດິດ</button>
+        </form>
+    
+        {% if kib_to_credit is not None %}
+        <h5>ຜົນໄດ້ຮັບ (LAK -> ເຄຣດິດ):</h5>
+        <p>ຈຳນວນກີບ: {{ request.POST.kib }} LAK</p>
+        <p>ຈຳນວນເຄຣດິດໂດຍປະມານ: <span class="fw-bold border fs-4 text-info" >{{ kib_to_credit }}</span></p>
+        <p>ໂບນັດ (3%): {{ price_bonus }} THB</p>
+        <p>ຈຳນວນເງິນບາດ (ຫຼັງຫັກໂບນັດ): {{ price_thb }} THB</p>
+        {% endif %}
+    
+    </div>
+</div>
+    
+
+
+{% endblock content %}

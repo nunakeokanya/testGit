@@ -1,0 +1,9 @@
+beautifulsoup4
+crispy-bootstrap4
+crispy-bootstrap5
+Django==5
+django-bootstrap4
+django-bootstrap5
+django-crispy-forms
+lxml
+requests
