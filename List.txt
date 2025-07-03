@@ -66,7 +66,17 @@ $ python manage.py migrate
 SengEmail bounmytrk54@gmail.com  /  54344245bM  2058987388   boun5445re@hotmail.com 
 
 
-unzip bin888.zip
+unrar x bin888.rar
 python3.13 -m venv env_django
+           mkvirtualenv env_django --python=python3.13
 source env_django/bin/activate
 
+ຄຳສັ່ງກອບຈາງຕະລາງSQLໄວ
+python manage.py dumpdata app888.Bin888 --natural-foreign --natural-primary --indent 4 > bin888_data.json
+
+ນຳເຂົ້າຂໍມຸນເກົ່າ python manage.py loaddata bin888_data.json
+ລົບຕາຕະລາງ 
+python manage.py shell
+>>> from app888.models import Bin888
+>>> Bin888.objects.all().delete()
+>>> exit()
