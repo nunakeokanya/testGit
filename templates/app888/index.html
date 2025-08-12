@@ -2,61 +2,73 @@
 {% load static %}
 {% block content %}
 
-<div    class="row justify-content-center align-items-center g-2">
-    <div class="col  my-1">
-
-        <h3>ຈຳນວນ <i class="fas fa-battery-full"></i> ແບັດເຕິລີ (Li-ion battery) </h1>
+<div class="row justify-content-center align-items-center g-2">
+    <div class="col my-1">
+        <h3>ຈຳນວນ <i class="fas fa-battery-full"></i> ແບັດເຕິລີ (Li-ion battery) </h3> {# H1 เปลี่ยนเป็น H3 ตามที่คุณเขียนมา #}
         <div>
             <img class="img-fluid" src="{% static 'img/001.jpg' %}" alt="" style="height: 20mm; width: 50mm;">
             <img class="img-fluid" src="{% static 'img/002.jpg' %}" alt="" style="height: 20mm; width: 50mm;">
             <img class="img-fluid" src="{% static 'img/003.jpg' %}" alt="" style="height: 20mm; width: 40mm;">
             <img class="img-fluid" src="{% static 'img/004.jpg' %}" alt="" style="height: 20mm; width: 40mm;">
-
         </div>
         <span>ຈຳນວນ: </span>
         {% for item in bin_show %}
-          {{ forloop.counter}}
-          {% empty %}
-        <p>ບໍ່ມີຂໍ້ມູນກ້ວຍ</p>
+            {{ forloop.counter}}
+        {% empty %}
+            <p>ບໍ່ມີຂໍ້ມູນກ້ວຍ</p>
         {% endfor %}
     </div>
 </div>
-<form action="{% url 'app888:print_bin_all' %}" method="POST" class="row row-cols-sm-4" style="background-color: rgba(224, 230, 236, 0.871);">
+
+{# *** เพิ่ม onsubmit="disableSubmitButton(this)" เข้าไปใน form tag *** #}
+<form action="{% url 'app888:print_bin_all' %}" method="POST" class="row row-cols-sm-4" style="background-color: rgba(224, 230, 236, 0.871);"
+      onsubmit="disableSubmitButton(this)"> 
 {% csrf_token %}
-    
     
     {% for item in bin_show %}
         <div class="col-sm">
             <div class="mb-3">
                 <label>
-                    <span class=" position-relative me-3">{{ item.price_lak|stringformat:"s"|slice:":-5" }}V <i class="fas fa-battery-full"></i>
+                    <span class="position-relative me-3">{{ item.price_lak|stringformat:"s"|slice:":-5" }}V <i class="fas fa-battery-full"></i>
                         <span class="position-absolute top-0 start-100 ms-1 translate-middle badge rounded-pill bg-secondary">
                             {{ item.total }}
+                        </span>
                     </span>
                 </label>
-        
+            
                 <span class="btn btn-danger" hx-trigger="click"
                     hx-on="click: document.getElementById('{{ item.price_lak|stringformat:"s"|slice:":-2" }}').stepDown()">-
                 </span>
-                <input  class="col-2"  type="number" max="50" id="{{item.price_lak|stringformat:"s"|slice:":-2"}}" value="0" name='b{{ item.price_lak|stringformat:"s"|slice:":-2" }}'>
+                <input class="col-2" type="number" max="50" id="{{item.price_lak|stringformat:"s"|slice:":-2"}}" value="0" name='b{{ item.price_lak|stringformat:"s"|slice:":-2" }}'>
                 
                 <span class="btn btn-info" hx-trigger="click"
                     hx-on="click: document.getElementById('{{ item.price_lak|stringformat:"s"|slice:":-2" }}').stepUp()">+
                 </span>
-
             </div>
         </div>
     {% empty %}
-    <p>ບໍ່ມີຂໍ້ມູນກ້ວຍ</p>
+        <p>ບໍ່ມີຂໍ້ມູນກ້ວຍ</p>
     {% endfor %}
 
     <div class="form-control">
         <label for="" class="">ຮັບເງີນ : </label>
         <input class="col-sm-10" type="number" id="" value="0" name="money_change">
-        
     </div>
-    <button  type="submit" class="col-12 btn btn-primary "> <i class="fas fa-bolt"></i> ຂາຍຕັດສະຕ໋ອກ</button>
+    <button type="submit" class="col-12 btn btn-primary "> <i class="fas fa-bolt"></i> ຂາຍຕັດສະຕ໋ອກ</button>
 
 </form>
 <a href="{% url 'app888:bin888_list' %}"><i class="fa-solid fa-democrat fa-2x text-danger"></i></a>
+
+<script>
+    function disableSubmitButton(form) {
+        var submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'กำลังประมวลผล...';
+        }
+        return true;
+    }
+    // ฟังก์ชัน printDiv ไม่ควรอยู่ที่นี่
+</script>
+
 {% endblock content %} 

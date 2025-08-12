@@ -11,8 +11,12 @@ $ python -m venv env ຕອນສ້າງ env
 $ py -m venv env
 
 
+virtualenv env_syterm01
+
+.\env_syterm01\Scripts\activate
+
 ເຂົ້າກ່ອງ ເປີດໃຊ້ງານ Venv  $ .\env_django\Scripts\activate   .\env_django\Scripts\activate   .\env_django\Scripts\activate   
-ເຂົ້າກ່ອງ ປີດໃຊ້ງານ Venv  $ deactivate
+ເຂົ້າກ່ອງ ປີດໃຊ້ງານ Venv  $ deactivate 
 (venv) E:\Python_Project\DJ\venv>
 
 
@@ -80,3 +84,52 @@ python manage.py shell
 >>> from app888.models import Bin888
 >>> Bin888.objects.all().delete()
 >>> exit()
+
+# settings.py
+
+# สำหรับ Development (เครื่องของคุณ)
+CHROMEDRIVER_PATH_DEV = r"D:\wab\bin\bin888\bin888\drivers\chromedriver.exe"
+CHROME_BINARY_PATH_DEV = r"C:\Program Files\Google\Chrome\Application\chrome.exe" # ตัวอย่าง Path ของ Chrome บน Windows
+
+# สำหรับ Production (PythonAnywhere)
+CHROMEDRIVER_PATH_PROD = '/usr/bin/chromedriver'
+CHROME_BINARY_PATH_PROD = '/usr/bin/google-chrome'
+
+# ตรวจสอบว่ารันอยู่ใน Production หรือ Development
+# คุณสามารถสร้างตัวแปรนี้เอง หรือใช้ DEBUG
+# สมมติว่าใน production เราจะตั้ง DEBUG = False
+if DEBUG: # หรือ is_production = False
+    CHROMEDRIVER_PATH = CHROMEDRIVER_PATH_DEV
+    CHROME_BINARY_PATH = CHROME_BINARY_PATH_DEV
+else: # Production
+    CHROMEDRIVER_PATH = CHROMEDRIVER_PATH_PROD
+    CHROME_BINARY_PATH = CHROME_BINARY_PATH_PROD
+
+
+# views.py
+from django.conf import settings # Import settings
+
+CHROMEDRIVER_PATH_ON_PA = '/usr/bin/chromedriver' # Path ของ Chromedriver บน PythonAnywhere
+# ไม่ต้องกำหนด CHROMEDRIVER_PATH ที่นี่แล้ว
+# CHROMEDRIVER_PATH = r"D:\wab\bin\bin888\bin888\drivers\chromedriver.exe" # ลบทิ้ง
+
+def get_driver():
+    print("กำลังเริ่มต้น Chrome driver...")
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+
+    # ดึง Path มาจาก settings.py
+    chrome_options.binary_location = settings.CHROME_BINARY_PATH # ดึงจาก settings
+    chromedriver_path = settings.CHROMEDRIVER_PATH # ดึงจาก settings
+
+    try:
+        service = Service(executable_path=chromedriver_path)
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        # ... ส่วนที่เหลือเหมือนเดิม ...
+        return driver
+    except Exception as e:
+        # ... ส่วน error handling ...
+        raise
+

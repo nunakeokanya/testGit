@@ -34,7 +34,7 @@ class ScrapingSettingsForm(forms.Form):
         label="ໜ້າເລີ່ມຕົ້ນທີ່ຈະດຶງຂໍ້ມູນ (Start Page)",
         initial=1,
         min_value=1,
-        max_value=100, # ສົມມຸດຕັ້ງຄ່າສູງສຸດໄວ້ທີ່ 100 ໜ້າ
+        max_value=500, # ສົມມຸດຕັ້ງຄ່າສູງສຸດໄວ້ທີ່ 100 ໜ້າ
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'ເຊັ່ນ: 1, 6, 20'})
     )
     pages_to_scrape_from_start = forms.IntegerField( # ປັບຊື່ຟິວໃຫ້ຊັດເຈນຂຶ້ນ

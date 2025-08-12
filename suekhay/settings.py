@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-b268k(-&tu#!+l&v3=%pk=ah@w@zqk_x4+e=(%s$%(!rr7b!q(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*'] # เปลี่ยน 'yourusername' เป็น username จริงของคุณ
 # ALLOWED_HOSTS = ['yourusername.pythonanywhere.com'] # เปลี่ยน 'yourusername' เป็น username จริงของคุณ

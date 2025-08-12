@@ -16,6 +16,7 @@ urlpatterns = [
     path('bin888_list/', views.bin888_list_View, name='bin888_list'),
     path('print<int:id>/', views.PrintView, name='print'),
     
+    
      # --- เพิ่ม URL สำหรับแก้ไขและลบตรงนี้ ---
     path('bins/edit/<int:pk>/', views.edit_bin888, name='edit_bin888'),
     path('bins/delete/<int:pk>/', views.delete_bin888, name='delete_bin888'),
@@ -36,7 +37,8 @@ urlpatterns = [
     # URL สำหรับ View ที่ยืนยันและบันทึกข้อมูล (ตรวจสอบชื่อฟังก์ชันใน views.py ให้ตรง)
     path('confirm_save_bin_data/', views.confirm_save_bin_data, name='confirm_save_bin_data'), # ตรวจสอบบรรทัดนี้
 
-    path('print_bin_all/', views.print_bin_all, name='print_bin_all'),
+    path('print-bin-all/', views.print_bin_all, name='print_bin_all'),
+
     path('ean13/', views.generate_ean13_barcode, name='generate_ean13_barcode'),
     path('code128/', views.generate_code128_barcode, name='generate_code128_barcode'),
     path('display_simple/', views.barcode_display_simplified, name='barcode_display_simplified'),

@@ -2,27 +2,62 @@
 {% load static %}
 
 {% block content %}
+
 <style>
     @media print {
-    body {
-        visibility: hidden; /* ซ่อนทุกอย่างบนหน้าเว็บโดย default เมื่อพิมพ์ */
-    }
-    #printableArea {
-        visibility: visible; /* ทำให้เฉพาะส่วน #printableArea แสดงผล */
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%; /* อาจต้องปรับแต่งตามขนาดกระดาษ */
-        height: auto;
-    }
-    /* ซ่อนปุ่มพิมพ์และส่วนอื่นๆ ที่ไม่ต้องการให้ปรากฏในการพิมพ์ */
-    .btn-group, .navbar, .footer { /* ตัวอย่าง: เพิ่ม class/ID ของ element ที่ไม่ต้องการพิมพ์ */
-        display: none !important;
-    }
-    /* อาจต้องปรับแต่ง CSS อื่นๆ สำหรับการพิมพ์ให้เหมาะสม */
-    /* เช่น การตั้งค่า margin, font-size เฉพาะสำหรับการพิมพ์ */
-}
+        /* 1. ซ่อนทุกอย่าง ยกเว้นส่วนที่ต้องการพิมพ์ */
+        body * { /* ใช้ * เพื่อเลือกทุก element ใน body */
+            visibility: hidden;
+        }
 
+        /* 2. ทำให้ส่วนที่ต้องการพิมพ์ (printableArea) แสดงผล */
+        #printableArea, #printableArea * { /* ทำให้ #printableArea และทุก element ภายในแสดงผล */
+            visibility: visible;
+        }
+
+        #printableArea {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%; /* ตั้งค่าความกว้างให้เต็ม 100% ของกระดาษ */
+            /* height: auto; */ /* ไม่จำเป็นต้องตั้งค่า height: auto */
+            margin: 0; /* ลบ margin เริ่มต้นของ body ออก */
+            padding: 0; /* ลบ padding เริ่มต้นของ body ออก */
+            box-sizing: border-box; /* สำคัญเพื่อให้ width/height คำนวณรวม padding/border */
+
+            /* อาจเพิ่มการตั้งค่าเฉพาะสำหรับการพิมพ์ */
+            font-size: 12pt; /* ปรับขนาดฟอนต์ให้เหมาะกับการพิมพ์ */
+            line-height: 1.2; /* ปรับระยะห่างระหว่างบรรทัด */
+        }
+
+        /* 3. ซ่อนองค์ประกอบที่ไม่ต้องการให้ปรากฏในการพิมพ์อย่างชัดเจน */
+        .btn-group, .navbar, .footer, /* เพิ่ม class/ID ของ element อื่นๆ ที่ไม่ต้องการพิมพ์ */
+        header, aside, footer, nav, #sidebar { /* ตัวอย่าง: ซ่อน common elements */
+            display: none !important;
+        }
+
+        /* 4. การจัดการกับตาราง (ถ้ามีปัญหาเรื่องการตัดหน้า) */
+        table {
+            width: 100% !important; /* ให้ตารางกว้างเต็ม */
+            border-collapse: collapse; /* ทำให้เส้นขอบตารางชิดกัน */
+        }
+        th, td {
+            border: 1px solid #000 !important; /* บังคับให้มีขอบตารางถ้าต้องการ */
+            padding: 2px; /* เพิ่ม padding ในเซลล์ */
+        }
+
+        /* 5. จัดการกับการขึ้นหน้าใหม่ (Page Breaks) */
+        /* ถ้าบิลยาวเกิน 1 หน้า */
+        .page-break-after {
+            page-break-after: always;
+        }
+        .page-break-before {
+            page-break-before: always;
+        }
+        .no-break {
+            page-break-inside: avoid; /* ป้องกันการตัดหน้ากลาง Element */
+        }
+    }
 </style>
 
 
@@ -35,7 +70,7 @@
                     <u>ຮ້ານ ສາຍເຕີມ</u>
                 <img class="img-fluid" src="{% static "logo/logo888.png" %}" alt="" style="height: 6mm;">
             </h5>
-        
+
             <table class="table table-sm table-bordered border-0 lh-1 me-5">
                 <tbody>
                     {% if bin_all %}
@@ -49,69 +84,85 @@
                     </tr>
                     <tr >
                         <td colspan="2" class="text-center">
-                            ຊື່: <b class="fs-3 fw-bold">{{ bin.name }} </b> 
+                            ຊື່: <b class="fs-3 fw-bold">{{ bin.name }} </b>
                             ລະຫັດ: <b class="fs-3 fw-bold">{{ bin.pw }}</b>
                         </td>
-                        
-                    </tr> 
-            
+
+                    </tr>
+
                     <tr>
-                        <td  class="text-center" >ເງີນ:</td>
+                        <td  class="text-center" >ແຕັມ:</td>
                         <td class="fs-4 fw-bold">
                         {{ bin.price_thb|floatformat:0 }} ฿
-                            <b class="fs-5 fw-bold">ມີແຖມຟຮີ {{ bin.price_bonus|floatformat:0 }} ฿</b>
+                            <b class="fs-5 fw-bold">ແຖມຟຮີ {{ bin.price_bonus|floatformat:0 }}฿</b>
                         </td>
-                    </tr> 
-            
-                    <tr>
-                        <td class="text-center">ລາຄາເງີນກີບ:</td>
-                        <td class="fs-5 fw-bold">{{ bin.price_lak|floatformat:"-3g" }} ກີບ</td>
-                    </tr> 
-                    <tr>
-                        <td class="text-center">ເວັບໄຊທາງການ:</td>
-                        <td class="fw-bold">{{ bin.url }}</td>
-                    </tr> 
-                    <tr>
-                        <td colspan="2" class="text-center mb-4">- - - - - - - * * * * * - - - - - - - 
-                            
-                        </td>
-                        
                     </tr>
-                        
+
+                    <tr>
+                        <td class="text-center">ເງີນກີບ:</td>
+                        <td class="fs-5 fw-bold">{{ bin.price_lak|floatformat:"-3g" }} ກີບ</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">ເວບຕົງທາງການ:</td>
+                        <td class="fw-bold">{{bin.url}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">ຄຳແນະນຳ:</td>
+                        <td class="fw-bold">ທ່າມີ👮 ຫ້າມເຂົ້າມາຖາມຊື້ເຊີ</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center mb-4"><i class="fa-solid fa-scissors"></i>- - - - - - - * * * * * - - - - - - -
+
+                        </td>
+
+                    </tr>
+
                     {% endfor %}
                     {% endif %}
-                    
+
                     <tr>
                         <td colspan="2" class="text-center">
-                            <small>ລວມເງິນ: </small> <strong>{{ total_price|floatformat:"-3g"}} ₭</strong> |
-                            <small>ຮັບເງີນ: </small> <strong>{{ money_change|floatformat:"-3g"}} ₭</strong> |
-                            <small>ເງິນທອນ: </small><strong>{{ sum_money_change|floatformat:"-3g"}} ₭</strong>
-                            
+                            <small>ລວມ: </small> <strong>{{ total_price|floatformat:"-3g"}}₭</strong> |
+                            <small>ຮັບເ: </small> <strong>{{ money_change|floatformat:"-3g"}}₭</strong> |
+                            <small>ທອນ: </small><strong>{{ sum_money_change|floatformat:"-3g"}} ₭</strong>
+
                         </td>
                     </tr>
-                    
                     <tr>
                         <td colspan="2" class="text-center">
-                            <span class="text-break" >ບໍລິການສະດວກວ່ອງໄວ
-                            </span>
-                            <div><i class="fa-brands fa-whatsapp"></i></div> 
-                        </td>
-                    </tr> 
-               
-                    <tr>
-                        <td colspan="2" class="text-center">
-                            
+
                             <b class="text-center">
                                 <img style="width: 80mm ;height: 15mm;" src="{% url 'app888:generate_code128_barcode' %}" alt="Code 128">
                             </b>
-                            
+
                         </td>
-                    </tr> 
+                    </tr>
+
+                    <tr>
+                         <td colspan="2" class="text-start">
+                            <span class="text-break"></span>
+                            <div class="my-1"><i class="fa-solid fa-bullhorn"></i> ອອນໄລ 24h ຟາກເງິນອອນໄລຖອນໜ້າຮ້ານໄດ້, ຟາກໜ້າຮ້ານຖອນອອນໄລໄດ້ຄືກັນ.</div>
+                            <div class="text-center"><i class="fa-brands fa-whatsapp"></i>
+                                977 18 595 
+                                <div class="text-center">
+                                <img class="img-fluid" src="{% static "logo/logo_wa.jpg" %}" alt="" style="height: 15mm;">
+                                </div>
+                            </div>
+                           
+                            <h3 class="text-center"><u>ແຈ້ງການ</u></h3>
+                            <p><i class="fa-solid fa-triangle-exclamation"></i>ເວລາພົບເຈົ້າໜ້າທີ່👮ຫ້າມເວົ້າມາຊື້ເຊີ, ໃຫ້ວ່າມາຊື້ບັດເຕີມເງິນ ຫຼື ເຕີມເພັດ💎ໂມບາຍຫຼືເກມອື່ນໆ ທີ່ບໍ່ແມ່ນເກມການພະນັນ.</p>
+                            <p><i class="fa-solid fa-triangle-exclamation"></i>ຊື້ໄວ ໄປໄວ ບໍ່ໃຫ້ຢູ່ດົນ ປອດໄວ້ກ່ອນ.</p>
+                            <p><i class="fa-solid fa-triangle-exclamation"></i>ເງີນນັບມາແຕ່ເຮືອນຢ່າມານັບຊ້າໆຢູ່ນີ້.</p>
+                         
+                           
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
     </div>
-    
+
 </div>
 
 <div class=" col-sm-12 text-center btn-group">
@@ -119,23 +170,26 @@
 </div>
 
 <script>
-    function printDiv(divName) {
-        // ลบ 3 บรรทัดนี้ออก:
-        // var printContents = document.getElementById(divName).innerHTML;
-        // var originalContents = document.body.innerHTML;
-        // document.body.innerHTML = printContents;
-
+    // ฟังก์ชัน printDiv ไม่จำเป็นต้องรับ parameter 'divName' อีกต่อไป
+    // เพราะเราใช้ CSS @media print ในการกำหนดพื้นที่พิมพ์แล้ว
+    function printDiv() {
         window.print();
-
-        // ลบ 1 บรรทัดนี้ออก:
-        // document.body.innerHTML = originalContents;
     }
 
-    window.setTimeout(clickit, 500); // คงโค้ดนี้ไว้
+    // ฟังก์ชัน clickit() และ setTimeout คงเดิม
+    // เพราะคุณยังต้องการให้มีการจำลองการคลิกปุ่ม
+    window.setTimeout(clickit, 200);
 
     function clickit(){
-        document.getElementById("fmp-button").click();
+        // ตรวจสอบให้แน่ใจว่าปุ่ม "fmp-button" มีอยู่ก่อนที่จะพยายามคลิก
+        const printButton = document.getElementById("fmp-button");
+        if (printButton) {
+            printButton.click();
+        } else {
+            // หากไม่พบปุ่ม, สั่งพิมพ์โดยตรง (เป็นการสำรอง)
+            printDiv();
+        }
     }
 </script>
 
-{% endblock content %} 
+{% endblock content %}

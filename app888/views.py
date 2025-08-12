@@ -165,33 +165,40 @@ def manual_add_bin888(request):
 
 
 
-
 @login_required(login_url='/login/')
 def print_bin_all(request):
-    bin = Bin888.objects.filter(published=True).order_by("price_lak").values('price_lak').annotate(total=Count('price_lak'))
-    bin_all = []
-    objects_to_update = []
-    updated_count = 0
-    total_price = 0
-
     if request.method == "POST":
         sale_record = SaleRecord(sale_datetime=timezone.now())
         sale_record.save()
 
-        for item in bin:
+        objects_to_update = []
+        updated_count = 0
+        total_price = 0
+
+        bin_prices = Bin888.objects.filter(published=True).order_by("price_lak").values('price_lak').annotate(total=Count('price_lak'))
+
+        for item in bin_prices:
             bin_item_price = int(item['price_lak'])
             now_b = 'b' + str(bin_item_price)
             b = request.POST.get(now_b)
 
-            if b:
-                # *** แก้ไขตรงนี้: เปลี่ยน "-date_time" เป็น "date_time" ***
-                # เพื่อดึงข้อมูลที่ "เก่าที่สุด" ก่อน (oldest first)
-                bin_new = Bin888.objects.filter(published=True, price_lak=bin_item_price).order_by("price_lak", "date_time")[:int(b)]
-                bin_all.extend(bin_new)
+            if b and int(b) > 0:
+                bin_new = Bin888.objects.filter(
+                    published=True,
+                    price_lak=bin_item_price
+                ).order_by("date_time")[:int(b)]
+
+                if len(bin_new) < int(b):
+                    messages.error(request, f'สินค้าไม่พอสำหรับราคา {bin_item_price} บาท. ต้องการ {b} แต่มีเพียง {len(bin_new)} ชิ้น.')
+                    # หากเกิดข้อผิดพลาดในการประมวลผล POST
+                    # ควร render หน้าฟอร์มเดิมกลับไปพร้อม error message
+                    # หรือ redirect ไปหน้าฟอร์มเดิม (ถ้าไม่ต้องการให้ re-submit)
+                    return render(request, 'app888/index.html', {'error_message': 'สินค้าไม่พอ'}) # เปลี่ยนชื่อ template ตามจริง
+                    # หรือ return redirect('app888:your_form_url')
 
                 for obj in bin_new:
                     obj.published = False
-                    obj.date_time = timezone.now() # date_time ของ obj จะถูกอัปเดตเป็นเวลาปัจจุบัน
+                    obj.date_time = timezone.now()
                     objects_to_update.append(obj)
                     updated_count += 1
                     total_price += obj.price_lak
@@ -204,45 +211,50 @@ def print_bin_all(request):
                         sale_bonus=obj.price_bonus
                     )
 
-        Bin888.objects.bulk_update(objects_to_update, ['published', 'date_time'])
-
-        updated_name = [obj.name for obj in objects_to_update]
-        messages.success(request, f'ອັບເດດ {updated_count}, ລາຍການຜ່ານອັບເດດ {updated_name}')
+        if objects_to_update:
+            Bin888.objects.bulk_update(objects_to_update, ['published', 'date_time'])
+            updated_name = [obj.name for obj in objects_to_update]
+            messages.success(request, f'ອັບເດດ {updated_count}, ລາຍການຜ່ານອັບເດດ {updated_name}')
 
         money_change = int(request.POST.get('money_change', 0))
-        sum_money_change = 0
-        if money_change > 1:
-            sum_money_change = money_change - total_price
+        sum_money_change = money_change - total_price
+        if money_change >= total_price: # หรือ money_change > total_price
             messages.success(request, f'ລວມເງິນ: {total_price}, ຮັບເງີນ: {money_change} ເງິນທ້ອນ: {sum_money_change}')
         else:
-            sum_money_change = 0
-            messages.error(request, f'ລວມເງິນ: {total_price}, ຮັບເງີນ: {money_change} ເງິນທ້ອນ: {sum_money_change}')
+            messages.error(request, f'ລວມເງິນ: {total_price}, ຮັບເງີນ: {money_change} ເງິນທ້ອນ: {sum_money_change} (เงินที่รับไม่พอ).')
 
         sale_record.total_sale_price_thb = sum(item.sale_price_thb for item in sale_record.salerecorditem_set.all())
         sale_record.total_sale_price_lak = sum(item.sale_price_lak for item in sale_record.salerecorditem_set.all())
         sale_record.total_sale_bonus = sum(item.sale_bonus for item in sale_record.salerecorditem_set.all())
         sale_record.save()
 
+        # *** ตรงนี้คือส่วนสำคัญ: Render หน้าใบบิล print_bin_all.html กลับไป ***
+        # โดยส่งข้อมูลที่จำเป็นสำหรับใบบิลเข้าไป
         return render(request, 'app888/print_bin_all.html', {
-            'bin_all': bin_all,
+            'bin_all': objects_to_update, # หรือ list ของ SaleRecordItem ถ้าต้องการรายละเอียดจาก SaleRecordItem
             'total_price': total_price,
             'sum_money_change': sum_money_change,
-            'money_change':money_change,
-            'sale_record':sale_record,
+            'money_change': money_change,
+            'sale_record': sale_record,
         })
-    else:
-        # สิ่งที่คุณส่งกลับไปที่หน้าจอเมื่อเป็นการเข้าถึงแบบ GET
-        # `money_change` และ `sale_record` จะไม่ถูกกำหนดถ้าไม่ได้อยู่ใน POST request
-        # ควรให้ค่าเริ่มต้นหรือดึงมาจากที่อื่นหากจำเป็นต้องแสดงผลในหน้า GET
-        # หรือแค่ไม่ต้องส่งไปก็ได้ถ้าไม่มีความหมาย
+
+    else: # GET request
+        # ถ้าเป็นการเข้าถึงแบบ GET สำหรับ URL /print-bin-all/
+        # หน้านี้อาจจะไม่มีข้อมูลอะไรให้พิมพ์ หรืออาจจะแสดงหน้าเปล่าๆ
+        # หรืออาจจะ Redirect ผู้ใช้ไปยังหน้าฟอร์มหลัก
+        # หรือแสดงบิลเปล่า/บิลตัวอย่าง
+        messages.info(request, "กรุณาส่งข้อมูลฟอร์มเพื่อสร้างใบบิล.")
+        # ตัวอย่าง: Redirect ไปหน้าฟอร์มหลัก (ถ้ามี)
+        # return redirect('app888:your_main_form_url')
         return render(request, 'app888/print_bin_all.html', {
-            'bin_all': [],
+            'bin_all': [], # ไม่มีข้อมูลเริ่มต้นสำหรับ GET
             'total_price': 0,
             'sum_money_change': 0,
-            'money_change': 0, # ควรให้ค่าเริ่มต้น
-            # 'sale_record': None, # หรือส่ง None ไป
+            'money_change': 0,
+            'sale_record': None,
         })
-# barcode_app/views.py
+
+
 from barcode import EAN13, Code128  # เพิ่ม Code128
 from barcode.writer import ImageWriter
 from io import BytesIO
@@ -409,7 +421,7 @@ def change_bin_data_automatically(
     external_username,
     external_password,
     start_page_number=1,
-    additional_pages_to_process=0,
+    additional_pages_to_process=None,
     current_django_user=None
 ):
     """
@@ -527,7 +539,7 @@ def change_bin_data_automatically(
         total_rows_failed = 0 
         max_retries_per_row = 3
 
-        total_pages_to_process = 1 + additional_pages_to_process
+        total_pages_to_process = 0 + additional_pages_to_process
         rows_to_process_before_cleanup = 30 # จำนวนแถวที่จะประมวลผลก่อนคลิกปุ่มทำความสะอาด
 
         for page_offset in range(total_pages_to_process):
@@ -589,7 +601,7 @@ def change_bin_data_automatically(
                 successful_row_processing = False # เพิ่มตัวแปรเพื่อติดตามความสำเร็จของแถวนี้
                 while retry_count < max_retries_per_row:
                     try:
-                        time.sleep(2)
+                        time.sleep(1)
                         print(f"[Change Automation] กำลังตรวจสอบ mainFrame และ game_table สำหรับแถวที่ {total_rows_processed + 1}...")
                         WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.ID, "game_table")))
                         print("[Change Automation] อยู่ใน mainFrame และ game_table พร้อมแล้ว.")
@@ -681,10 +693,11 @@ def change_bin_data_automatically(
                                 alert_message = alert.text
                                 print(f"[Change Automation] พบ Alert ครั้งที่ {alert_idx}: {alert_message}")
                                 alert.accept()
+                                time.sleep(1)
                                 print(f"[Change Automation] คลิก OK บน Alert ครั้งที่ {alert_idx} แล้ว.")
                                 if "สำเร็จ" in alert_message or "success" in alert_message.lower() or "เรียบร้อย" in alert_message:
                                     alert_success = True
-                                time.sleep(2)
+                                # time.sleep(1)
                             except TimeoutException:
                                 print(f"[Change Automation] ไม่พบ Alert Pop-up ครั้งที่ {alert_idx} (อาจจะไม่มี หรือโหลดไม่ทัน).")
                                 if alert_idx == 1:
@@ -714,7 +727,7 @@ def change_bin_data_automatically(
                         rows_processed_in_this_batch += 1 # เพิ่มตัวนับ batch
                         rows_processed_on_current_page += 1 # เพิ่มตัวนับแถวในหน้าปัจจุบัน
                         print(f"[Change Automation] แถวที่ {total_rows_processed} ดำเนินการสำเร็จแล้ว. (ในหน้าปัจจุบัน: {rows_processed_on_current_page} แถว)")
-                        time.sleep(5)
+                        time.sleep(2)
                         successful_row_processing = True # ตั้งค่าเป็น True เมื่อประมวลผลสำเร็จ
                         break # ออกจาก retry_count loop เมื่อสำเร็จ
 
@@ -788,10 +801,13 @@ def change_bin_data_automatically(
                         print("[Auto Top-up] คลิกปุ่ม 'เติมเงินโดยอัตโนมัติ' สำเร็จแล้ว!")
                         
                         # จัดการ Alert ที่อาจจะปรากฏหลังคลิกปุ่ม "เติมเงินโดยอัตโนมัติ"
+                        time.sleep(4)
                         try:
                             WebDriverWait(driver, 5).until(EC.alert_is_present())
                             alert = driver.switch_to.alert
                             print(f"[Auto Top-up] พบ Alert หลังคลิกปุ่ม: {alert.text}")
+                            alert.accept()
+                            time.sleep(3)
                             alert.accept()
                             print("[Auto Top-up] คลิก OK บน Alert หลังคลิกปุ่มแล้ว.")
                         except TimeoutException:
@@ -863,7 +879,7 @@ def bin_data_changer_form(request):
         'default_username': os.environ.get('EXTERNAL_USERNAME', ''), 
         'default_password': os.environ.get('EXTERNAL_PASSWORD', ''), 
         'default_start_page_number': 1, 
-        'default_additional_pages_to_process': 0, 
+        'default_additional_pages_to_process': 1, 
     }
     return render(request, 'app888/bin_data_changer_form.html', context)
 
@@ -1279,7 +1295,7 @@ def AddBinSup888(request):
                                         'price_thb': credit,
                                         'price_lak': credit_lak,
                                         'price_bonus': credit_x03,
-                                        'url': '...',
+                                        'url': 'royal558.com',
                                         'date_time': now.isoformat(),
                                     })
                             except ValueError as ve:

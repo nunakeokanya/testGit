@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ยืนยันการทำรายการ</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9; }
+        h1 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        ul li { margin-bottom: 8px; }
+        .success-message { color: green; font-weight: bold; }
+        .error-message { color: red; font-weight: bold; }
+        .back-button { display: inline-block; margin-top: 20px; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; }
+        .back-button:hover { background-color: #0056b3; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ยืนยันการทำรายการสำเร็จ</h1>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if sale_record %}
+            <p><strong>รหัสรายการขาย:</strong> {{ sale_record.id }}</p>
+            <p><strong>วัน/เวลาที่ทำรายการ:</strong> {{ sale_record.sale_datetime|date:"d M Y H:i:s" }}</p>
+
+            <h2>สรุปรายการสินค้า</h2>
+            {% if bin_all %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ชื่อสินค้า</th>
+                            <th>ราคา LAK</th>
+                            <th>โบนัส</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in bin_all %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.price_lak }}</td>
+                                <td>{{ item.price_bonus }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>ไม่พบรายการสินค้าที่ถูกขายในรอบนี้</p>
+            {% endif %}
+
+            <p><strong>รวมราคาทั้งหมด:</strong> {{ total_price }} LAK</p>
+            <p><strong>รับเงินมา:</strong> {{ money_change }} LAK</p>
+            <p><strong>เงินทอน:</strong> {{ sum_money_change }} LAK</p>
+
+        {% else %}
+            <p class="error-message">ไม่สามารถโหลดข้อมูลการทำรายการได้</p>
+        {% endif %}
+
+        <a href="{% url 'app888:print_bin_all' %}" class="back-button">กลับไปหน้าฟอร์ม</a>
+    </div>
+</body>
+</html>
